@@ -1,129 +1,193 @@
-# QuranTech — an Agent Skill for Quran App Development
+# QuranTech
 
-[![Status: Experimental](https://img.shields.io/badge/status-experimental-orange)](#-status-experimental)
-[![Agent Skill](https://img.shields.io/badge/type-agent%20skill-blue)](https://code.claude.com/docs/en/skills)
-[![Plugin](https://img.shields.io/badge/type-claude%20code%20plugin-purple)](https://code.claude.com/docs/en/plugins)
-[![skills.sh](https://skills.sh/b/quranpedia/qurantech-skill)](https://skills.sh/quranpedia/qurantech-skill)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](#-contributing--feedback)
+Domain knowledge for the AI coding agent that is about to write your Qurʾān
+feature. Nineteen reference files and a short set of non-negotiable rules,
+loaded by the agent when the task needs them. It ships no code into your
+application, changes nothing at runtime, and is not in your dependency graph.
 
-**QuranTech** teaches AI coding agents how to build Quran applications *correctly* — with verified text sources, qira'at-aware data models, proper Arabic rendering, and the etiquette (adab) the Quranic text deserves.
+| Repository | Version | References | Ships |
+|---|---|---|---|
+| [`quran-ws/qurantech-skill`](https://github.com/quran-ws/qurantech-skill) | `1.0.0` in the manifest — no tag or release | 19 files, ~21,500 words | An Agent Skill. No runtime code |
 
-Building Quran apps has hidden domain traps that generic coding knowledge walks straight into: hardcoding 6,236 ayahs (counts differ across riwayat), matching verses across mushafs by number (they merge and split), rendering Uthmani script in system fonts (glyphs break), auto-generating tafsir with an LLM (dangerous), Unicode-normalizing the text (destroys it). This skill encodes the know-how that prevents all of that — gathered from production Quran platforms, open datasets, and the Muslim developer community.
+> **Experimental, and the label is doing real work.** The content comes from
+> production Qurʾān platforms, open datasets and the developer community, but
+> coverage is uneven, recommendations about APIs and datasets age, and the
+> benchmark suite is three prompts (`evals/evals.json`). Treat it as a
+> knowledgeable colleague, not a fatwa: verify anything touching Islamic content
+> with a qualified scholar, and review its technical output like any other code.
 
-Works with [Claude Code](https://code.claude.com), [Claude.ai](https://claude.ai), the Claude API, and any agent runtime that supports the [Agent Skills](https://code.claude.com/docs/en/skills) format.
+## What it provides
 
-## What it covers
+Building Qurʾān apps has traps that generic coding knowledge walks straight
+into: hard-coding 6,236 ayat (the count differs between readings), matching
+verses across editions by number (they merge and split), rendering Uthmani
+script in a system font (the glyphs break), Unicode-normalising the text (it
+destroys it), generating tafsīr — scriptural commentary — with a language model.
+This skill encodes the knowledge that prevents that.
 
-The skill uses progressive disclosure: a lean `SKILL.md` entry point, with 19 focused reference files the agent loads only when the task needs them.
+- **A lean entry point.** `SKILL.md` carries the triggers, an interview
+  workflow, the mandatory rules and an index; the agent loads a reference file
+  only when the task calls for it.
+- **Nineteen references**, grouped as data and sources, text and display,
+  qirāʾāt, audio, scholarly content, features, engineering, and adab (the
+  etiquette owed to the text).
+- **An interview before an architecture.** For a new project the agent is told
+  to ask what you are building, the platform, which
+  [qirāʾah](https://quran.ws/docs/concepts/glossary/#qiraah) — which transmitted
+  reading of the Qurʾān — which features, whether it must work offline, and
+  which data sources, before it recommends anything. That is the decision that is
+  expensive to reverse.
+- **Rules it will not trade away.** From `references/adab.md`, marked mandatory:
+  never truncate an ayah mid-text; never strip diacritical marks; verified text
+  sources only, never typed by hand; Qurʾānic fonts, not generic Arabic ones;
+  never log Qurʾānic text — log the reference; never use it as test data or
+  placeholder text; label translations as translations; never auto-play audio
+  without user intent.
+- **Eleven engineering principles**, including the one this project repeats
+  most: never hard-code an ayah count; derive it from the edition's metadata.
+- **Technology-agnostic.** Patterns rather than frameworks — Flutter, Swift,
+  Kotlin, React, Laravel or anything else.
 
-| Domain | References |
-|--------|-----------|
-| **Data & sources** | Data source catalog · API comparison (Quran Foundation, QUL, Tanzil, QuranPedia, MP3Quran…) · QuranPedia API deep-dive (endpoints, bulk dumps, delta sync) · Data models & schemas |
-| **Text & display** | Arabic text rendering, fonts & the iOS CoreText problem · Mushaf page display (SVG / image / text) · Tajweed coloring & waqf marks |
-| **Qira'at** | All 10 qira'at & 20 riwayat · six ayah-counting systems · cross-mushaf mapping (the Hafs-anchor pattern) · per-riwayah fonts |
-| **Audio** | Recitation playback modes · timing data & word-level highlighting · reciter/recitation modeling · verse recognition from audio (offline ONNX models) |
-| **Scholarly content** | Translations & tafsir · i'rab (morphology + syntax treebanks) · content types beyond tafsir (asbab, fatwas, topics, gharib, mutashabihat…) |
-| **Features** | Search (full-text, root-based, semantic — with a production Arabic search recipe) · memorization/hifz tools · embeddable Quran widgets & oEmbed |
-| **Engineering** | Offline-first architecture · delta-sync freshness · testing & text-integrity QA · editorial pipelines |
-| **Ethics** | Adab rules for handling sacred text — display, storage, logging, AI safety, linguistic terminology |
+## Use it when you need
 
-Two rules run through everything:
+- An AI agent to write code that touches Qurʾānic text, recitation or Qurʾān
+  data, and to already know what this domain punishes.
+- The domain traps encoded rather than rediscovered one production bug at a time.
+- Rules for handling sacred text that are specific enough to review a pull
+  request against.
 
-1. **Never compromise the text.** Verified sources only, byte-exact storage, no truncation, no normalization, integrity checks in CI.
-2. **Don't reinvent solved problems.** The skill points to existing datasets, fonts, APIs, and open-source packages before recommending custom builds — and it stays **technology-agnostic**: the guidance applies whether you build in Flutter, Swift, Kotlin, React, Laravel, or anything else.
+## Not for
 
-## Installation
+| You want | Use |
+|---|---|
+| Verified Qurʾānic text, in seven riwāyāt, with word numbering | [Quran Text](https://github.com/quran-ws/quran-text) |
+| Printed pages as vectors, with an addressable ayah layer | [Quran SVG](https://github.com/quran-ws/quran-svg) |
+| The word and mark shapes of a split muṣḥaf | [Quran SVG Elements](https://github.com/quran-ws/quran-svg-elements) |
+| Those pages rendered fast inside a mobile app | [Quran Engine](https://github.com/quran-ws/quran-engine) |
+| [Tajwīd](https://quran.ws/docs/concepts/glossary/#tajweed) rules as spans over the text | [Quran Tajweed](https://github.com/quran-ws/quran-tajweed) |
+| Translation between ayah-numbering systems | [Qiraat Ayah Map](https://github.com/quran-ws/qiraat-ayah-map) |
+| A runtime dependency of any kind | None of the above — QuranTech ships no code |
 
-### Claude Code (plugin marketplace)
+And it is not verification. A skill changes what the agent knows; it does not
+check what the agent produced. A dropped diacritic does not throw — it renders as
+slightly wrong Qurʾān forever. Keep the integrity check in CI, comparing stored
+text byte-for-byte against the published source. The skill tells the agent to do
+this; it cannot do it for you.
 
-```bash
-/plugin marketplace add https://github.com/quranpedia/qurantech-skill
+## See it work
+
+- **[quran.ws/blocks/qurantech/](https://quran.ws/blocks/qurantech/)** — what it
+  covers and the traps it prevents.
+- **[quran.ws/demo/](https://quran.ws/demo/)** — switch the QuranTech layer on and
+  it surfaces the relevant trap for whichever other layers are running.
+- **[quran.ws/docs/reference/qurantech/](https://quran.ws/docs/reference/qurantech/)**
+  — what ships, the four install routes, and the limits below in full.
+
+## Provenance
+
+| | |
+|---|---|
+| Entry point | `plugins/qurantech/skills/qurantech/SKILL.md` |
+| References | `plugins/qurantech/skills/qurantech/references/*.md` — 19 files |
+| Packaged skill | `dist/qurantech.skill`, a 73,515-byte zip on the default branch |
+| Evals | `evals/evals.json` — three prompts with assertions |
+| Version | `1.0.0` in both `plugin.json` files. There are no releases and no tags |
+
+There is nothing to pin. "The version you have" means "the state of the default
+branch on the day you installed it", and neither the packaged file nor the
+directory has a published digest to check it against. If you need a fixed
+version today, record the commit SHA you installed from and keep a copy.
+
+## Quick start
+
+```
+/plugin marketplace add https://github.com/quran-ws/qurantech-skill
 /plugin install qurantech@qurantech-skill
 ```
 
-Installs the skill as a namespaced Claude Code plugin skill (`/qurantech:qurantech`), with versioned updates. Requires Claude Code v2.1.205 or later.
+That installs it in Claude Code as `/qurantech:qurantech`. Requires Claude Code
+v2.1.205 or later.
 
-### One command (any supported agent)
+> Install from the `quranpedia` address. `quran-ws/qurantech-skill` does not
+> exist yet — a request for it returns 404 — and it is the address most of
+> quran.ws still shows. This will change when the repository transfers.
 
-```bash
-npx skills add quranpedia/qurantech-skill
-```
+Three other routes, all in the repository README:
 
-Installs via the [skills.sh](https://skills.sh) CLI for Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot, and more.
+| Route | Command |
+|---|---|
+| Any supported agent runtime (Cursor, Codex, Gemini CLI, Copilot…) | `npx skills add quran-ws/qurantech-skill` |
+| Copy the directory yourself | `git clone` it, then `cp -r qurantech-skill/plugins/qurantech/skills/qurantech ~/.claude/skills/qurantech` |
+| Claude.ai or the API | Upload `dist/qurantech.skill` under Settings → Capabilities → Skills |
 
-### Claude Code (manual)
-
-```bash
-git clone https://github.com/quranpedia/qurantech-skill.git
-mkdir -p ~/.claude/skills
-cp -r qurantech-skill/plugins/qurantech/skills/qurantech ~/.claude/skills/qurantech
-```
-
-Either way — verify with a prompt like *"add Warsh support to my Quran app"* and watch the skill trigger.
-
-### Claude.ai / Claude API
-
-Upload the packaged skill file (`dist/qurantech.skill`) via **Settings → Capabilities → Skills** on Claude.ai, or attach it through the API's skills support. To rebuild the package yourself, use the [skill-creator](https://github.com/anthropics/skills) tooling:
-
-```bash
-python -m scripts.package_skill path/to/qurantech-skill/plugins/qurantech/skills/qurantech
-```
-
-## Example prompts
-
-- *"Build a mushaf reader web app with tajweed coloring"*
-- *"My app is Hafs-only — add support for Warsh"*
-- *"Identify which ayah is being recited from microphone audio, fully offline"*
-- *"Design the database schema for a multi-riwayah Quran app with bookmarks"*
-- *"I have a WordPress tafsir blog — let readers tap a verse to see its tafsir"*
-- *"Design a hifz app with automatic recitation checking"*
-- *"Which Quran API should I use for translations in 50 languages?"*
-
-## Repository layout
+Skills load on relevance, not on command, so the useful check is a prompt:
 
 ```
-qurantech-skill/
-├── .claude-plugin/
-│   └── marketplace.json            # Claude Code plugin marketplace catalog
-├── plugins/
-│   └── qurantech/
-│       ├── .claude-plugin/
-│       │   └── plugin.json         # Plugin manifest (namespace: qurantech)
-│       └── skills/
-│           └── qurantech/
-│               ├── SKILL.md        # Entry point: triggers, workflow, principles, reference index
-│               └── references/     # 19 domain reference files (loaded on demand)
-├── evals/                # Test prompts + assertions for benchmarking the skill
-├── dist/                 # Packaged .skill file for Claude.ai / API
-└── README.md             # You are here
+add Warsh support to my Quran app
 ```
 
-## 🧪 Status: Experimental
+If it is live, the agent should open by asking which qirāʾah you support today
+and what your data model looks like, rather than writing a migration. There is no
+version string to read back — see Provenance.
 
-This skill is **young and actively evolving**. The guidance is drawn from real production systems and verified datasets, but coverage is uneven, some recommendations will age as APIs and datasets evolve, and we are still benchmarking how much it improves agent output (an eval suite lives in `evals/`).
+## Two limits to know before you rely on it
 
-Treat it as a knowledgeable colleague, not a fatwa: **verify religious-content decisions with qualified scholars, and verify technical output like any other code review.** If the skill leads an agent to do something wrong — especially anything touching text integrity or Islamic content — we want to know immediately.
+**It does not name the quran.ws blocks.** The string `quran-ws` does not appear
+anywhere in the skill. The references point at external sources — Quran
+Foundation, QUL, Tanzil, QuranPedia, MP3Quran — and at two of these repositories
+under their pre-transfer names, `quranpedia/quran-svg` and
+`quranpedia/qiraat-ayah-map`. Quran Text, Quran Tajweed, Quran Engine, Quran
+Assets, Quran SVG Elements and Quran PNG are not mentioned. If you want an agent
+to reach for those, name them in your own prompt or project instructions.
 
-## 🤝 Contributing & Feedback
+**One of its numbers is contested.** `references/qiraat.md` assigns the reading
+of Abū ʿAmr al-Baṣrī — and so both of its riwāyāt, al-Dūrī and al-Sūsī — to the
+Basran counting system, total 6,204 ayat. Measured against the printed KFGQPC
+editions we publish, al-Dūrī numbers 6,217 and al-Sūsī 6,218, both closest to
+First Madinan. Both kinds of number can be meaningful — one is a scholarly
+counting position for the reading, the other is what a publisher set in type —
+and which belongs where is **unresolved**. Do not let an agent write either into
+a schema as settled. See
+[ayah-counting systems](https://quran.ws/docs/concepts/ayah-counting/).
 
-This project gets better through the community's eyes. All of these help:
+## Works with
 
-- **🐛 Report issues** — wrong facts, dead links, outdated API details, misbehaving guidance, or an agent doing something un-adab with the skill loaded. Open an issue with the prompt you used and what went wrong.
-- **📚 Improve references** — deeper qira'at knowledge, more verified data sources, corrections from scholars, new domains (recitation pedagogy, accessibility, Indo-Pak script…).
-- **🧪 Add evals** — realistic prompts + objective assertions in `evals/evals.json` are as valuable as content.
-- **🌍 Share experience** — built a Quran app using this skill? Tell us what the skill missed; the gaps you hit are the roadmap.
+| | |
+|---|---|
+| [Quran Text](https://github.com/quran-ws/quran-text) | The verified text an agent should be reaching for first. |
+| [Qiraat Ayah Map](https://github.com/quran-ws/qiraat-ayah-map) | The mapping behind the counting advice; named in the skill under its `quranpedia` address. |
+| [Quran SVG](https://github.com/quran-ws/quran-svg) | The page artwork the muṣḥaf-display reference recommends, likewise. |
 
-Guidelines for content PRs:
+## Documentation
 
-1. **Cite sources** — guidance should trace to verified data, production experience, or scholarly reference.
-2. **Stay technology-agnostic** — patterns over frameworks; name a specific stack only as evidence that a pattern works.
-3. **Be lean** — this content ships inside an AI context window; every paragraph must earn its tokens.
-4. **Respect the adab rules** — including in code examples and test data (`references/adab.md`).
+- [Reference: QuranTech](https://quran.ws/docs/reference/qurantech/) — what
+  ships, every install route, and what it changes about an agent's output.
+- [Choosing a block](https://quran.ws/docs/start/choosing-a-block/) — the eight
+  building blocks this guidance is about.
+- [Glossary](https://quran.ws/docs/concepts/glossary/) — qirāʾah, riwayah,
+  muṣḥaf, tajwīd, in plain English.
+
+## Contributing
+
+Wrong facts, dead links, outdated API details, or an agent doing something
+un-adab with the skill loaded: open an issue with the prompt you used and what
+went wrong. Content pull requests should cite their source, stay
+technology-agnostic, stay lean — this ships inside a context window — and
+respect the adab rules, including in code examples and test data.
+
+## Licence
+
+Code is **MIT**; the skill content in `plugins/` and `dist/` is **CC BY 4.0**,
+with a standing waiver of attribution for use inside a product. See
+[LICENSE](LICENSE).
+
+The datasets and sources the references point to carry their own licences, some
+requiring attribution — the references flag these where they apply.
 
 ## Acknowledgements
 
-This skill stands on the work of the wider Quran-tech community: the King Fahd Glorious Quran Printing Complex, Tanzil, the Quran Foundation / Quran.com, QUL (Tarteel), QuranPedia, MP3Quran, EveryAyah, the Quranic Arabic Corpus, the offline-tarteel project, and the [Itqan community](https://itqan.dev) of developers serving the Quran. May Allah reward them all.
-
-## License
-
-[MIT](LICENSE) — free to use, modify, and redistribute. Note that the *datasets and content sources the skill points to* each carry their own licenses (some require attribution, e.g. the Quranic Arabic Corpus); the skill's references flag these where they apply.
+This skill stands on the work of the wider Qurʾān-tech community: the King Fahd
+Glorious Qurʾān Printing Complex, Tanzil, the Quran Foundation / Quran.com, QUL
+(Tarteel), QuranPedia, MP3Quran, EveryAyah, the Quranic Arabic Corpus, the
+offline-tarteel project, and the [Itqan community](https://itqan.dev) of
+developers serving the Qurʾān. May Allah reward them all.
