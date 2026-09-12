@@ -2,14 +2,18 @@
 
 <img src=".github/banner.svg" alt="QuranTech — Guidance, Experimental" width="820">
 
-**Quran application knowledge for AI coding agents. Guides development across all the blocks; not part of the runtime dependency graph.**
+**Quran application knowledge and development guidance prepared for AI coding agents.**
 
 <a href="https://quran.ws/blocks/qurantech"><img alt="See it work" src="https://img.shields.io/badge/See_it_work-15705D?style=for-the-badge&labelColor=102F29"></a>
 <a href="https://quran.ws/docs/reference/qurantech"><img alt="Documentation" src="https://img.shields.io/badge/Documentation-102F29?style=for-the-badge&labelColor=102F29"></a>
 
 </div>
 
-> معرفةٌ مُجمَّعة عن بناء تطبيقات القرآن، مُهيّأةٌ لوكلاء البرمجة، لا تدخل في شجرة اعتماديّات التطبيق.
+Use it when working with an AI coding agent and you want it to understand riwayat, ayah counting, Quran data structures, project components, and conventions for Quran applications.
+
+> معرفة وإرشادات مهيّأة لوكلاء البرمجة بالذكاء الاصطناعي لبناء تطبيقات القرآن والتعامل مع بياناتها ومصطلحاتها.
+>
+> استخدمها عندما تعمل مع وكيل برمجي أو أداة AI وتريد أن يفهم القراءات، وعدّ الآي، وبنية البيانات، ومكوّنات المشروع، والقواعد الخاصة بالتطبيقات القرآنية.
 
 | | |
 |---|---|
