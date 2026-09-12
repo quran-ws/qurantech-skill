@@ -19,7 +19,7 @@ Use it when working with an AI coding agent and you want it to understand riwaya
 |---|---|
 | **References** | 19 focused files |
 | **Format** | Agent Skill |
-| **Licence** | MIT |
+| **Licence** | CC BY 4.0 (the content) · MIT (the tooling) |
 
 ```text
 /plugin marketplace add https://github.com/quran-ws/qurantech-skill
