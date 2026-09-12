@@ -2,36 +2,42 @@
 
 These rules are **mandatory** — not suggestions. Every Quran app must respect the sanctity of the Quranic text.
 
-## Text Integrity
+## Text integrity and display
 
-- **Never truncate an ayah mid-text.** Always display complete ayahs. If space is limited, show fewer ayahs rather than cutting one short.
-- **Never split a word across lines in a way that breaks meaning.** Use proper Arabic line-breaking rules.
-- **Always include the Basmala** (بسم الله الرحمن الرحيم) at the beginning of every surah except At-Tawbah (Surah 9). In An-Naml (27:30), the Basmala appears within the ayah itself.
-- **Preserve diacritical marks** (tashkeel/harakat) in Quranic text. Never strip them for convenience.
-- **Use verified text sources only.** Never manually type Quranic text — always pull from authenticated sources (King Fahd Complex, Tanzil verified, Quran Foundation). This applies to **every place Quranic text appears**: UI, code snippets, sample data, documentation, and prose explanations alike. When writing *about* an ayah in a plan or answer, cite it by reference (surah:ayah) instead of typing it — hand-typed text in prose carries the same corruption risk (dropped shadda, truncated verse) as in code.
+These rules are the Quran.ws guidelines, stated once there and copied here by
+`tools/generate_adab.py` in quran-ws/docs. Each line names its rule; the page
+carries the example and the check that catches a violation.
 
-## Display & Presentation
+- **Never edit the source in place; any processing produces a new copy or a new layer, and the source stays reproducible from the published original.** (Quranic text 1.2, https://quran.ws/docs/guidelines/quranic-text/)
+- **Never type Quranic text by hand, in code, prose, tests or documentation; quote it by reference, or copy it from a released dataset and name the release.** (Quranic text 1.4, https://quran.ws/docs/guidelines/quranic-text/)
+- **Never run `normalize` on the source, to `NFC`, `NFD`, `NFKC` or `NFKD`.** (Quranic text 2.2, https://quran.ws/docs/guidelines/quranic-text/)
+- **Don't trim, strip "weird characters", collapse whitespace, swap look-alike characters or remove marks from the source; generate a separate copy when search needs one.** (Quranic text 2.3, https://quran.ws/docs/guidelines/quranic-text/)
+- **Edition marks are not part of an ayah: end of ayah ۝ (`U+06DD`), rubu al-hizb ۞ (`U+06DE`), sajdah ۩ (`U+06E9`).** (Quranic text 3.4, https://quran.ws/docs/guidelines/quranic-text/)
+- **Check your character set against the font's `cmap` before adopting it, because a character with no glyph disappears or renders as a box and the reader won't notice.** (Quranic text 3.3, https://quran.ws/docs/guidelines/quranic-text/)
+- **Fallback fonts are forbidden for Quranic text; a missing glyph fails the build and is never drawn by another font, because a substituted shape can read as a different mark.** (Engineering 5.3, https://quran.ws/docs/guidelines/engineering/)
+- **Numbering systems are not interchangeable, and ayah boundaries do not line up across them.** (Quranic text 5.2, https://quran.ws/docs/guidelines/quranic-text/)
+- **The basmalah is its own field, because whether it counts as an ayah depends on the numbering system, and surah al-Tawbah has none.** (Quranic text 5.3, https://quran.ws/docs/guidelines/quranic-text/)
+- **An ayah number alone is not a location; bind it to its surah and its numbering system.** (Quranic text 4.2, https://quran.ws/docs/guidelines/quranic-text/)
+- **Never trim the text to fit the layout, and never let an ellipsis stand in Quranic text.** (Quranic text 7.1, https://quran.ws/docs/guidelines/quranic-text/)
+- **A fragment is presented as a fragment, with its reference and a link, and never reads as the complete ayah.** (Quranic text 7.2, https://quran.ws/docs/guidelines/quranic-text/)
+- **Never render an ayah that hasn't finished loading; show a loading state or an error.** (Quranic text 7.4, https://quran.ws/docs/guidelines/quranic-text/)
+- **Keep the text out of placeholders, fixtures, error logs, filenames and URLs; a reference like `114:1` is enough.** (Quranic text 7.5, https://quran.ws/docs/guidelines/quranic-text/)
+- **When the text is not what you expected, fail loudly; never auto-repair and never guess at missing text or metadata.** (Quranic text 8.4, https://quran.ws/docs/guidelines/quranic-text/)
+- **A mushaf data update is never silent; a new version is a new dataset with a known origin and a known diff, announced to the reader.** (Quranic text 8.5, https://quran.ws/docs/guidelines/quranic-text/)
+- **A recitation never plays without the reader's action; autoplay is off by default, and a notification or an advertisement never carries it.** (Engineering 6.5, https://quran.ws/docs/guidelines/engineering/)
 
-- **Ayah numbers must be accurate** to the specific riwayah/counting system being used. Hafs has 6,236 ayahs; Warsh has 6,214. Never assume a universal count.
-- **Surah names and metadata must match the mushaf edition.** Different mushafs may use slightly different surah header styles.
-- **Use appropriate Quranic fonts** — never render Quranic text in generic Arabic fonts. Use Uthmani script fonts (KFGQPC, Amiri Quran, etc.).
-- **Right-to-left layout is mandatory** for all Quranic text. Ensure proper bidi handling even in mixed-language contexts.
-- **Never place Quranic text in UI elements that imply dismissal** (e.g., swipe-to-delete, dismissible toasts, error messages).
+## Naming, layout and interface
 
-## Data Handling
-
-- **Never log Quranic text in error/debug logs.** Use ayah references (surah:ayah) instead of actual text in logs.
-- **Variable and database column names should be respectful.** Avoid names like `quran_string`, `verse_blob`, or `raw_text`. Prefer `ayah_text`, `surah_name`, `mushaf_page`.
-- **Never use Quranic text as test data, placeholder text, or lorem ipsum.**
-- **Cache and store Quranic text with care.** Ensure cached text is not corrupted, partially written, or mixed with non-Quranic content.
-- **Quranic text should not be modifiable by users** in the UI. It is read-only content.
+- **Variable and database column names follow the Quran.ws naming guideline** (https://quran.ws/docs/guidelines/naming/): `ayah`, `surah`, `mushaf`, one canonical name in the model, the table, the foreign key and the API; never `quran_string`, `verse_blob` or `raw_text`.
+- **Never place Quranic text in UI elements that imply dismissal** (swipe-to-delete, dismissible toasts, error messages), and never let a user edit it in the UI.
+- **Right-to-left layout is mandatory** for all Quranic text, with proper bidi handling in mixed-language contexts.
+- **Basmalah:** whether it is counted as an ayah depends on the numbering system; it is absent from surah 9 and part of the text in 27:30. Read it from the dataset, never assume it.
 
 ## Audio Etiquette
 
 - **Audio recitations must start from the beginning of an ayah**, not from the middle.
 - **Provide a way to seek by ayah**, not arbitrary timestamps that land mid-recitation.
 - **Attribute the reciter clearly** when playing audio.
-- **Do not auto-play Quran recitation** without user intent — always require explicit user action.
 
 ## Search & Results
 
