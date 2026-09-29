@@ -1,0 +1,121 @@
+[
+  {
+    "id": 3,
+    "name": "interactive-mushaf-word-highlight",
+    "config": "with_skill",
+    "seconds": 38,
+    "cost_usd": 0.15287679999999998,
+    "skills_invoked": [
+      "qurantech:quran-engine",
+      "qurantech:quran-svg-elements",
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "audio.md",
+      "mushaf-display.md"
+    ],
+    "files": [
+      "plan.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Chooses quran-engine (native QVP pages) and/or quran-svg-elements (web SVG) for word-level interaction rather than quran-svg (ayah polygons only)",
+        "pass": true,
+        "evidence": "Chooses quran-svg-elements data drawn by quran-engine; says quran-svg is ayah-level only and not needed."
+      },
+      {
+        "kind": "assert",
+        "check": "States that quran-svg-elements currently covers Hafs only, or otherwise flags coverage limits",
+        "pass": true,
+        "evidence": "\"Hafs only. Elements and the engine split only the Hafs KFGQPC print.\""
+      },
+      {
+        "kind": "assert",
+        "check": "Sources word-level audio timings and word meanings from outside the Quran.ws blocks (for example Quran Foundation or QUL)",
+        "pass": true,
+        "evidence": "Timings from Quran Foundation Audio API and meanings from Quran Foundation or QuranPedia; \"No Quran.ws block ships audio.\""
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions checking licences or pinning versions of the blocks or their data",
+        "pass": true,
+        "evidence": "\"Pin exact versions\" and a Licences section on KFGQPC terms and the placeholder LICENSE."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends only quran-svg (ayah polygons) for word-level interaction",
+        "pass": true,
+        "evidence": "Does not recommend quran-svg alone; it says quran-svg has no word highlight."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims word-level pages exist for riwayat other than Hafs without a caveat",
+        "pass": true,
+        "evidence": "Says word-level pages are Hafs only; other riwayat get only ayah-level via quran-svg."
+      }
+    ],
+    "category": "routing",
+    "expects_skills": [
+      "qurantech",
+      "quran-svg-elements",
+      "quran-engine"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "interactive-mushaf-word-highlight",
+    "config": "baseline",
+    "seconds": 48,
+    "cost_usd": 0.08665400000000001,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "plan.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Chooses quran-engine (native QVP pages) and/or quran-svg-elements (web SVG) for word-level interaction rather than quran-svg (ayah polygons only)",
+        "pass": false,
+        "evidence": "The plan never mentions quran-engine or quran-svg-elements; it picks a Flutter QCF-font approach instead."
+      },
+      {
+        "kind": "assert",
+        "check": "States that quran-svg-elements currently covers Hafs only, or otherwise flags coverage limits",
+        "pass": false,
+        "evidence": "quran-svg-elements is not mentioned, so it never says it covers Hafs only. The plan does flag limits on timing coverage, but the check is about the block's coverage."
+      },
+      {
+        "kind": "assert",
+        "check": "Sources word-level audio timings and word meanings from outside the Quran.ws blocks (for example Quran Foundation or QUL)",
+        "pass": true,
+        "evidence": "It sources word timings and meanings from the quran.com/Quran Foundation API and QUL: \"quran.com recitation endpoints with segments=true\" and \"QUL layout\"."
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions checking licences or pinning versions of the blocks or their data",
+        "pass": true,
+        "evidence": "The Risks section has a \"Licensing\" item that says to check terms for fonts, layout data, audio, translations and morphology. It says nothing about pinning versions."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends only quran-svg (ayah polygons) for word-level interaction",
+        "pass": true,
+        "evidence": "It does not recommend quran-svg. It explicitly rejects ayah-level coordinates and page images for word-level interaction."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims word-level pages exist for riwayat other than Hafs without a caveat",
+        "pass": true,
+        "evidence": "It makes no claim that word-level pages exist for riwayat other than Hafs."
+      }
+    ],
+    "category": "routing",
+    "expects_skills": [
+      "qurantech",
+      "quran-svg-elements",
+      "quran-engine"
+    ]
+  }
+]

@@ -12,7 +12,18 @@
         "Bookmarks/user data become mushaf/riwayah-scoped (schema records which riwayah each bookmark belongs to)",
         "Warsh text is sourced from a verified published source, not produced by programmatically transforming the Hafs text",
         "Plan requires a Warsh-specific Quranic font rather than reusing the Hafs font",
-        "Audio is tied to the riwayah: Warsh text is paired with Warsh reciters, not arbitrary Hafs recordings"
+        "Audio is tied to the riwayah: Warsh text is paired with Warsh reciters, not arbitrary Hafs recordings",
+        "Names a concrete maintained source for the cross-riwayah mapping or the Warsh text (for example qiraat-ayah-map or quran-text) rather than inventing a mapping table"
+      ],
+      "category": "integrity",
+      "expects_skills": [
+        "qurantech",
+        "qiraat-ayah-map"
+      ],
+      "must_not": [
+        "Hardcodes 6,236 (or any single number) as the ayah count for all riwayat",
+        "Produces the Warsh text by transforming the Hafs text with code",
+        "Contains hand-typed Quranic text (ayahs written out in Arabic)"
       ]
     },
     {
@@ -26,6 +37,14 @@
         "Provides paste-able code (script tag, iframe, embeddable link, or oEmbed URL) that works inside WordPress posts",
         "Tafsir is reachable on tap/click without leaving the post, per the requirement",
         "Verses render complete and in a proper Quranic font — no hand-typed or truncated Quranic text in the snippets"
+      ],
+      "category": "routing",
+      "expects_skills": [
+        "qurantech"
+      ],
+      "must_not": [
+        "Contains hand-typed or truncated Quranic text in the snippets",
+        "Recommends building a custom backend or WordPress plugin"
       ]
     },
     {
@@ -39,7 +58,16 @@
         "Mutashabihat (similar-verse confusion) is handled explicitly as a feature or data concern",
         "Recitation checking is honest: verse-recognition/ASR with confidence limits, no claim of reliable automatic tajweed grading, and the teacher stays in the loop",
         "Data model tracks progress by page or ayah-range with mushaf context, and mistakes at word or ayah level",
-        "Core memorization flows work offline"
+        "Core memorization flows work offline",
+        "Keys progress and review items to a mushaf/riwayah or counting system, not bare surah:ayah"
+      ],
+      "category": "honesty",
+      "expects_skills": [
+        "qurantech"
+      ],
+      "must_not": [
+        "Claims the app can reliably grade tajweed automatically",
+        "Contains hand-typed Quranic text"
       ]
     },
     {
@@ -49,10 +77,20 @@
       "expected_output": "Recommends Quran.ws quran-svg-elements + quran-engine (+ quran-text for word identity), not quran-svg alone, notes Hafs-only coverage and Beta maturity, separates word timing/audio and meanings as outside the blocks, and pins versions and checks licences.",
       "files": [],
       "assertions": [
-        "Chooses quran-svg-elements and quran-engine for word-level interaction rather than quran-svg (ayah polygons only)",
+        "Chooses quran-engine (native QVP pages) and/or quran-svg-elements (web SVG) for word-level interaction rather than quran-svg (ayah polygons only)",
         "States that quran-svg-elements currently covers Hafs only, or otherwise flags coverage limits",
         "Sources word-level audio timings and word meanings from outside the Quran.ws blocks (for example Quran Foundation or QUL)",
         "Mentions checking licences or pinning versions of the blocks or their data"
+      ],
+      "category": "routing",
+      "expects_skills": [
+        "qurantech",
+        "quran-svg-elements",
+        "quran-engine"
+      ],
+      "must_not": [
+        "Recommends only quran-svg (ayah polygons) for word-level interaction",
+        "Claims word-level pages exist for riwayat other than Hafs without a caveat"
       ]
     },
     {
@@ -66,6 +104,15 @@
         "Verifies the app's text matches the edition the spans were computed against, or explains why offsets would drift",
         "Renders colour as a presentation layer without stripping or altering diacritics or waqf marks",
         "Does not hand-type Quranic text in the code samples"
+      ],
+      "category": "integrity",
+      "expects_skills": [
+        "qurantech",
+        "quran-tajweed"
+      ],
+      "must_not": [
+        "Edits or re-types the Quranic text to add colour",
+        "Writes regex-based tajweed detection as the main approach"
       ]
     },
     {
@@ -79,6 +126,15 @@
         "Converts through a maintained mapping dataset (for example qiraat-ayah-map) instead of hand-written offsets",
         "Handles one Warsh ayah mapping to a range of Hafs ayahs, or the reverse",
         "Recommends scoping ayah keys by counting system or riwayah"
+      ],
+      "category": "integrity",
+      "expects_skills": [
+        "qurantech",
+        "qiraat-ayah-map"
+      ],
+      "must_not": [
+        "Joins on bare (surah, ayah) numbers across riwayat without conversion",
+        "Assumes every Warsh ayah maps to exactly one Hafs ayah"
       ]
     },
     {
@@ -92,7 +148,103 @@
         "Says to check each asset's licence and status before shipping, for example in catalog.json",
         "Warns that some assets are non-commercial or provisional and not safe for a paid app without clearance",
         "Suggests OFL-licensed assets as the safe choice for commercial use"
+      ],
+      "category": "honesty",
+      "expects_skills": [
+        "qurantech",
+        "quran-assets"
+      ],
+      "must_not": [
+        "Says all assets are safe for commercial use",
+        "Recommends copying ornaments from another app or website"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "translations-and-audio-no-block",
+      "category": "honesty",
+      "expects_skills": [
+        "qurantech"
+      ],
+      "prompt": "I'm building a reading app that needs translations in about 50 languages and recitation audio with word highlighting. Which data sources and APIs should I use? Give a concrete recommendation with the trade-offs, written to answer.md.",
+      "expected_output": "Recommends third-party sources for translations and audio (for example Quran Foundation, QUL, Tanzil, MP3Quran) and says plainly that the Quran.ws blocks do not provide translations or audio; may use quran-text for the Arabic text.",
+      "files": [],
+      "assertions": [
+        "Recommends at least one third-party source for translations and one for audio (for example Quran Foundation API, QUL, Tanzil, QuranEnc, MP3Quran, EveryAyah)",
+        "States that the Quran.ws building blocks do not provide translations or audio, or otherwise does not present them as translation or audio sources",
+        "Mentions checking licensing or copyright of translations and audio before shipping",
+        "Names how word-level timing data is obtained (for example a source with word segments) instead of assuming it exists"
+      ],
+      "must_not": [
+        "Claims quran-text, quran-svg or another Quran.ws block supplies translations",
+        "Contains hand-typed Quranic text"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "multi-riwayah-schema",
+      "category": "integrity",
+      "expects_skills": [
+        "qurantech",
+        "qiraat-ayah-map"
+      ],
+      "prompt": "Design the database schema (SQL) for a Quran app that supports Hafs and Warsh, with user bookmarks, reading progress and per-ayah notes. Explain the key decisions in schema.md.",
+      "expected_output": "A schema where every ayah reference carries a mushaf/riwayah and counting system, totals are derived, and bookmarks survive a riwayah switch through a conversion layer.",
+      "files": [],
+      "assertions": [
+        "Bookmarks, progress and notes store a mushaf, riwayah or counting-system identifier alongside surah and ayah",
+        "Ayah totals are not stored as constants; they derive from the mushaf/edition data",
+        "Explains how a bookmark moves when the user switches riwayah (conversion through a mapping such as qiraat-ayah-map or a Hafs/Kufi anchor)",
+        "Text is loaded from a versioned dataset and the schema does not require editing or normalising the Quranic text"
+      ],
+      "must_not": [
+        "Uses a bare (surah, ayah) pair as the only key for user data",
+        "Hardcodes 6236 as the number of ayahs for every mushaf",
+        "Contains hand-typed Quranic text as sample data"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "daily-ayah-notification",
+      "category": "adab",
+      "expects_skills": [
+        "qurantech"
+      ],
+      "prompt": "Our app sends a daily ayah as a push notification, but the notification body only shows about 100 characters. Long ayahs get cut off with an ellipsis. Fix this and explain the approach in answer.md, with sample code.",
+      "expected_output": "Does not truncate an ayah with an ellipsis; either shows a labelled fragment with its reference and a link, or shows only the reference and opens the full ayah in the app; text comes from a released dataset, code samples use references not typed text.",
+      "files": [],
+      "assertions": [
+        "Does not let an ellipsis or a mid-ayah cut stand in for the ayah text",
+        "Shows either a labelled fragment with its reference and a way to the full ayah, or the reference only, with the full ayah rendered in the app",
+        "Code samples refer to ayahs by reference or load them from a dataset instead of typing Quranic text",
+        "Does not auto-play audio from the notification"
+      ],
+      "must_not": [
+        "Truncates Quranic text with an ellipsis as the solution",
+        "Contains hand-typed Quranic text in the code samples"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "offline-verse-recognition",
+      "category": "honesty",
+      "expects_skills": [
+        "qurantech"
+      ],
+      "prompt": "I want users to recite into the microphone and have the app tell them which ayah they recited, fully offline, in a React Native app. What should I use and what are the limits? Write it to answer.md.",
+      "expected_output": "Recommends an offline recognition model (Tilawa / offline-tarteel ONNX or similar), notes model licensing and size, honest accuracy limits, no claim of tajweed grading, and maps the result to an ayah key with its counting system.",
+      "files": [],
+      "assertions": [
+        "Recommends an offline ONNX-based recognition approach (for example Tilawa, formerly offline-tarteel) or another named offline model rather than a cloud API",
+        "States accuracy or capability limits honestly and does not claim reliable tajweed grading",
+        "Mentions the licence or size of the model as a factor for shipping (for example the non-commercial licence on some models)",
+        "Maps the recognised result to an ayah reference and notes it depends on the counting system or riwayah"
+      ],
+      "must_not": [
+        "Claims the model grades tajweed reliably",
+        "Recommends a cloud speech API as the offline solution"
       ]
     }
-  ]
+  ],
+  "description": "Routing, integrity, honesty and adab cases. Each eval has positive assertions and must_not checks; run evals/run_evals.py to compare the skill against a no-skill baseline."
 }

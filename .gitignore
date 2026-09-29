@@ -1,2 +1,5 @@
 .DS_Store
 .maestro/
+
+# raw eval answers may contain Quranic text
+evals/results/*/*.answer.md
