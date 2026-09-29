@@ -14,7 +14,7 @@ Follow the `qurantech` skill's adab rules (never alter or truncate Quranic text)
 `npm i @quran.ws/qiraat-ayah-map` (0.1.0 on the registry; the tarball ships `data/` and the generated `dist/mappings`, `dist/rawis`). The README still says "not published", so confirm with `npm view`. From the repo, `dist/mappings` is gitignored: run `npm run generate`, or use the committed `data/*.json`. Pin the package version.
 
 ## Convert a reference
-Kufan is the hub; there is no `basri-to-makki`. Route through Kufan in two steps.
+Kufan is the hub; there is no `basri-to-makki`. Route through Kufan: find the system, then convert forward or in reverse.
 1. Find the system: `dist/rawis/<rawi>.json`, field `_counting_system_associated_with_qari` or `_counting_system_printed`. A null `_mapping_file_*` means Kufan: no conversion.
 2. Forward `mappings/by-counting-system/kufi-to-<system>.json`: `surahs[s].ayahs[a]` gives `{target_ayah, status}`, status `mapped | merged | split`.
    - `split` carries `splits_into: [n, m]`: show a range, never only `target_ayah`.

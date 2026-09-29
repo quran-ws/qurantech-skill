@@ -18,7 +18,7 @@ Annotations are positions, never markup. The text stays unchanged; spans `[start
 - Hafs only; other riwayat are unsupported.
 
 ## Packages
-- npm, 0.1.0 (verified on the registry): `@quran.ws/tajwid` (engine, `unpack`, `resolveOverlaps`, `clusterEnd`, `bridgeJoins`), `@quran.ws/tajwid-rules`, `@quran.ws/tajwid-annotations`, `@quran.ws/tajwid-react` (`TajweedText`, `TajweedLegend`). The site guide still says unpublished; trust the registry.
+- npm 0.1.0: `@quran.ws/tajwid-rules` and `@quran.ws/tajwid-annotations` ship their data and work today. The code packages `@quran.ws/tajwid` (engine: `unpack`, `resolveOverlaps`, `clusterEnd`, `bridgeJoins`), `@quran.ws/tajwid-react` (`TajweedText`, `TajweedLegend`) and `@quran.ws/tajwid-cli` were published without a built `dist/` (checked 2026-09-29: 2 files each, `main` points at a missing `./dist/index.js`), so importing them fails. Until a fixed version ships, build them from `packages/*` in the repo, or read the data packages directly. Re-check with `npm view` and `npm pack`.
 - Python reader: not published. Take the dataset from a GitHub release: `gh release download v0.4.3 -R quran-ws/quran-tajweed`.
 
 ## Projecting
@@ -29,6 +29,8 @@ Annotations are positions, never markup. The text stays unchanged; spans `[start
 ## Minimal example (React: colour ayah 1:1)
 ```tsx
 import corpus from '@quran.ws/tajwid-rules'
+// `edition`: load editions/uthmani-hafs.json from the repo; `corpus`: from @quran.ws/tajwid-rules
+// The three imports below need the built packages (see Packages: build from the repo until a fixed npm release ships).
 import annotations from '@quran.ws/tajwid-annotations'
 import { unpack, assertEdition } from '@quran.ws/tajwid'
 import { TajweedText, TajweedLegend } from '@quran.ws/tajwid-react'

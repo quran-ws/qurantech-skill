@@ -59,7 +59,7 @@ Vector mushaf pages with **31,118 ayah polygons**, **5 riwayat** (Hafs, Warsh, Q
 
 ### quran-svg-elements · Pages & Assets · Beta
 The same pages decomposed into addressable **words (77,432) and marks (436,398)**. Only **Hafs (KFGQPC)** is split so far. Use for recitation highlighting, clickable words, word-level audio or meanings, cropping an ayah.
-- `gh release download v1.0.0 -R quran-ws/quran-svg-elements`, or CDN `https://cdn.quran.ws/svg/elements/<version>/pages/001.svg` and `index/by-page/001.json`.
+- `gh release download -R quran-ws/quran-svg-elements` (latest, v1.1.2 when checked), or CDN `https://cdn.quran.ws/svg/elements/<version>/pages/001.svg` and `index/by-page/001.json`.
 - Word count is 77,432 here and 77,434 in quran-text; expect a small difference and map by surah/ayah/word, not by count.
 - Licence: CC BY 4.0 (the work), KFGQPC terms (the artwork).
 
@@ -72,7 +72,7 @@ Rust core rendering interactive mushaf pages with each platform's native graphic
 
 ### quran-tajweed · Annotations · Stable
 **182 authored rules** (127 produce spans) and **147,255 precomputed spans**, reviewed by specialists. Annotations are positional spans kept **apart from the text**: unchanged text + spans → coloured presentation. Editions in `editions/` record the exact text each span set was measured against.
-- `npm i @quran.ws/tajwid @quran.ws/tajwid-rules @quran.ws/tajwid-annotations` (plus `react`, `core`, `cli` packages). The Python package is unpublished; take the dataset from a release (`gh release download v0.4.3 -R quran-ws/quran-tajweed`).
+- `npm i @quran.ws/tajwid @quran.ws/tajwid-rules @quran.ws/tajwid-annotations` (the engine is the `@quran.ws/tajwid` package itself; `tajwid-react` and `tajwid-cli` also exist). **The code packages were published without a built `dist/` (checked 2026-09-29), so they fail to import; `-rules` and `-annotations` ship data and work. Build the code from the repo until a fixed version ships.**. The Python package is unpublished; take the dataset from a release (`gh release download v0.4.3 -R quran-ws/quran-tajweed`).
 - The spans only apply to the text edition they were measured on (`edition:check` gate). Never apply them to a different text.
 - Licence: CC BY 4.0 (corpus), MIT (engine).
 

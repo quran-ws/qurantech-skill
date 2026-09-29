@@ -1,7 +1,7 @@
 ---
 name: qurantech
 license: MIT
-description: "Use when building a Quran app or adding a Quran feature to an existing app, and you must choose which Quran.ws building blocks (quran-text, quran-svg, quran-svg-elements, quran-engine, quran-tajweed, qiraat-ayah-map, quran-assets, quran-png) or third-party sources to use. Also for mushaf display, Arabic text and fonts, audio, qira'at and ayah counting, search, translations, tafsir, i'rab, memorization, verse recognition, embeds, data models, offline architecture, testing, and adab for sacred text. Triggers: quran, mushaf, ayah, surah, riwayah, qira'at, hafs, warsh, tajweed, recitation, hifz, tafsir, quran.ws, KFGQPC."
+description: "Use when building a Quran app or adding a Quran feature to an existing app, and a choice is needed between Quran.ws building blocks (quran-text, quran-svg, quran-svg-elements, quran-engine, quran-tajweed, qiraat-ayah-map, quran-assets, quran-png) or third-party sources to use. Also for mushaf display, Arabic text and fonts, audio, qira'at and ayah counting, search, translations, tafsir, i'rab, memorization, verse recognition, embeds, data models, offline architecture, testing, and adab for sacred text. Triggers: quran, mushaf, ayah, surah, riwayah, qira'at, hafs, warsh, tajweed, recitation, hifz, tafsir, quran.ws, KFGQPC."
 ---
 
 # QuranTech

@@ -21,7 +21,7 @@ Rust core behind one C ABI, drawn by each platform's own canvas. It renders the 
 
 ## Install status (per README)
 - Web: README shows "not published"; `npm view` returned 0.3.0 for `@quran.ws/engine`. Treat as published, verify with `npm view`.
-- iOS/macOS: SwiftPM `from: "0.2.2"`, product `QvpKit`. Android: Maven `ws.quran:qvp-android:0.2.2`. Flutter: `qvp_flutter ^0.2.2`. React Native: `@quran.ws/qvp-react-native` (Android only; needs Kotlin library as Gradle project).
+- iOS/macOS: SwiftPM `from: "0.2.2"` (README pin; releases are at 0.3.x), product `QvpKit`. Android: Maven `ws.quran:qvp-android:0.2.2`. Flutter: `qvp_flutter ^0.2.2` (does not resolve to 0.3.x). Check each registry for the current version. React Native: `@quran.ws/qvp-react-native` (Android only; needs Kotlin library as Gradle project).
 Details: `references/platforms.md`.
 
 ## Page data is separate
@@ -31,7 +31,8 @@ No package bundles pages. Load from `https://cdn.quran.ws/qvp/<version>/042.qvp`
 Backing pixels per CSS pixel: `Math.max(2, devicePixelRatio)`. Use DPR itself, never extra supersampling (softens strokes and diacritics). Set `canvas.width/height` to rect times ratio, `style` to CSS size, pass `24 * pixelRatio` to `fit`. Cap total pixels for memory.
 
 ## Hit-testing and words
-- Full engine (documented): `hitTestExact(x, y)`, `hitTest(x, y, {maxDistance})`, `hitTestView`, `hitTestViewEx`, `hitBoxes()`, `wordKey(i)`, `findWord(s,a,w)`, `resolve('1:2')`, `highlight`, `mask`, `search`, `cropSvg`.
+- Full engine (documented): `hitTestExact(x, y)`, `hitTest(x, y, {maxDistance})`, `hitTestView`, `wordKey(i)`, `findWord(s,a,w)`, `resolve('1:2')`, `highlight`, `mask`, `search`, `cropSvg`.
+- `hitTestViewEx` and `hitBoxes()` appear in the repo CHANGELOG and API-PARITY docs but not in the published 0.3.0 package (repo HEAD only); check the installed version before using them.
 - Page units differ from viewport pixels (`…View` calls): subtract layout offset, divide by scale.
 - Lite README names `page.hitTestExact(x, y)`; `web/lite.mjs` at HEAD defines `hitTest(x, y)` (box lookup). Check the installed version.
 
