@@ -17,13 +17,16 @@ Use it when working with an AI coding agent and you want it to understand riwaya
 
 | | |
 |---|---|
-| **References** | 19 focused files |
+| **Skills** | 7: a router plus six Quran.ws block skills |
 | **Format** | Agent Skill |
 | **Licence** | CC BY 4.0 (the content) · MIT (the tooling) |
 
 ```text
 /plugin marketplace add https://github.com/quran-ws/qurantech-skill
+/plugin install qurantech@qurantech-skill
 ```
+
+The router (`qurantech`) picks the right [Quran.ws building block](https://quran.ws) or third-party source. Block skills: `quran-svg`, `quran-svg-elements`, `quran-engine`, `quran-tajweed`, `qiraat-ayah-map`, `quran-assets`. `quran-text` and `quranic-terminology` ship their own skills in their repositories.
 
 ## Where the documentation is
 
@@ -39,8 +42,8 @@ Everything about using it lives on the site. This repository is the source.
 
 | | |
 |---|---|
-| `plugins/qurantech/` | the skill itself: the references, loaded only when the task needs them |
-| `dist/` | the packaged `qurantech.skill` |
+| `plugins/qurantech/skills/` | the router skill and the six block skills; references load only when the task needs them |
+| `dist/` | the packaged `.skill` files and `SHA256SUMS` |
 | `evals/` | the benchmark prompts and their assertions |
 | `LICENSES/` | per-file licence texts |
 
