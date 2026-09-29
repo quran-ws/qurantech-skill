@@ -41,6 +41,58 @@
         "Data model tracks progress by page or ayah-range with mushaf context, and mistakes at word or ayah level",
         "Core memorization flows work offline"
       ]
+    },
+    {
+      "id": 3,
+      "name": "interactive-mushaf-word-highlight",
+      "prompt": "I'm building an Android and iOS Quran app. I want the real printed mushaf pages, and while a reciter plays the current word should light up and users should be able to tap any word to see its meaning. Which building blocks should I use, and how do they fit together? Write the plan to plan.md.",
+      "expected_output": "Recommends Quran.ws quran-svg-elements + quran-engine (+ quran-text for word identity), not quran-svg alone, notes Hafs-only coverage and Beta maturity, separates word timing/audio and meanings as outside the blocks, and pins versions and checks licences.",
+      "files": [],
+      "assertions": [
+        "Chooses quran-svg-elements and quran-engine for word-level interaction rather than quran-svg (ayah polygons only)",
+        "States that quran-svg-elements currently covers Hafs only, or otherwise flags coverage limits",
+        "Sources word-level audio timings and word meanings from outside the Quran.ws blocks (for example Quran Foundation or QUL)",
+        "Mentions checking licences or pinning versions of the blocks or their data"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "tajweed-reader",
+      "prompt": "Add tajweed colouring to my web Quran reader. It already shows Hafs text from my own JSON file. What's the cleanest way? Give concrete steps and code, and write it to answer.md.",
+      "expected_output": "Uses quran-tajweed annotation spans over unchanged text, checks the app's text matches the edition the spans were measured on, does not alter the Quranic text or use regex rules, and does not present colours as a substitute for a teacher.",
+      "files": [],
+      "assertions": [
+        "Uses precomputed tajweed annotation spans (for example quran-tajweed) applied over the unchanged text, rather than editing the text or writing regex detection from scratch",
+        "Verifies the app's text matches the edition the spans were computed against, or explains why offsets would drift",
+        "Renders colour as a presentation layer without stripping or altering diacritics or waqf marks",
+        "Does not hand-type Quranic text in the code samples"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "warsh-tafsir-join",
+      "prompt": "My app shows Warsh text and joins each ayah to a tafsir table keyed by (surah, ayah) in Hafs numbering. Users report that some Warsh ayahs show the wrong tafsir or none. Explain what is going wrong and how to fix it with concrete code. Write it to answer.md.",
+      "expected_output": "Identifies the counting-system mismatch, recommends the qiraat-ayah-map conversion through the Kufan hub handling split/merged ayahs (one ayah may map to a range), and notes keys need a counting system.",
+      "files": [],
+      "assertions": [
+        "Identifies different ayah numbering between Warsh and Hafs (splits and merges) as the cause",
+        "Converts through a maintained mapping dataset (for example qiraat-ayah-map) instead of hand-written offsets",
+        "Handles one Warsh ayah mapping to a range of Hafs ayahs, or the reverse",
+        "Recommends scoping ayah keys by counting system or riwayah"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "ornament-licence-check",
+      "prompt": "I'm making a paid Quran study app and want nice surah header banners and ayah number markers in the style of the printed mushaf. Where should I get them and is there anything I must check before shipping? Write to answer.md.",
+      "expected_output": "Points to quran-assets, tells the user to read each asset's licence and status in catalog.json, warns that scan-derived ornaments are provisional CC BY-NC-SA and unsuitable for a paid app without clearance, and prefers OFL font-derived markers.",
+      "files": [],
+      "assertions": [
+        "Recommends quran-assets (or equivalent open, recolourable SVG source) instead of redrawing or copying from another app",
+        "Says to check each asset's licence and status before shipping, for example in catalog.json",
+        "Warns that some assets are non-commercial or provisional and not safe for a paid app without clearance",
+        "Suggests OFL-licensed assets as the safe choice for commercial use"
+      ]
     }
   ]
 }

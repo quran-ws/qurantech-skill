@@ -3,50 +3,51 @@
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-orange)](#-status-experimental)
 [![Agent Skill](https://img.shields.io/badge/type-agent%20skill-blue)](https://code.claude.com/docs/en/skills)
 [![Plugin](https://img.shields.io/badge/type-claude%20code%20plugin-purple)](https://code.claude.com/docs/en/plugins)
-[![skills.sh](https://skills.sh/b/quranpedia/qurantech-skill)](https://skills.sh/quranpedia/qurantech-skill)
+[![skills.sh](https://skills.sh/b/quran-ws/qurantech-skill)](https://skills.sh/quran-ws/qurantech-skill)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](#-contributing--feedback)
 
-**QuranTech** teaches AI coding agents how to build Quran applications *correctly* — with verified text sources, qira'at-aware data models, proper Arabic rendering, and the etiquette (adab) the Quranic text deserves.
+**QuranTech** teaches AI coding agents how to build Quran applications *correctly* on top of the Quran.ws building blocks and other trusted sources — with verified text sources, qira'at-aware data models, proper Arabic rendering, and the etiquette (adab) the Quranic text deserves.
 
 Building Quran apps has hidden domain traps that generic coding knowledge walks straight into: hardcoding 6,236 ayahs (counts differ across riwayat), matching verses across mushafs by number (they merge and split), rendering Uthmani script in system fonts (glyphs break), auto-generating tafsir with an LLM (dangerous), Unicode-normalizing the text (destroys it). This skill encodes the know-how that prevents all of that — gathered from production Quran platforms, open datasets, and the Muslim developer community.
 
 Works with [Claude Code](https://code.claude.com), [Claude.ai](https://claude.ai), the Claude API, and any agent runtime that supports the [Agent Skills](https://code.claude.com/docs/en/skills) format.
 
-## What it covers
+## What is in it
 
-The skill uses progressive disclosure: a lean `SKILL.md` entry point, with 19 focused reference files the agent loads only when the task needs them.
+Seven skills. `qurantech` is the router: it picks the right [Quran.ws](https://quran.ws) building block or third-party source, then hands off. Six block skills carry the working detail for one block each.
 
-| Domain | References |
-|--------|-----------|
-| **Data & sources** | Data source catalog · API comparison (Quran Foundation, QUL, Tanzil, QuranPedia, MP3Quran…) · QuranPedia API deep-dive (endpoints, bulk dumps, delta sync) · Data models & schemas |
-| **Text & display** | Arabic text rendering, fonts & the iOS CoreText problem · Mushaf page display (SVG / image / text) · Tajweed coloring & waqf marks |
-| **Qira'at** | All 10 qira'at & 20 riwayat · six ayah-counting systems · cross-mushaf mapping (the Hafs-anchor pattern) · per-riwayah fonts |
-| **Audio** | Recitation playback modes · timing data & word-level highlighting · reciter/recitation modeling · verse recognition from audio (offline ONNX models) |
-| **Scholarly content** | Translations & tafsir · i'rab (morphology + syntax treebanks) · content types beyond tafsir (asbab, fatwas, topics, gharib, mutashabihat…) |
-| **Features** | Search (full-text, root-based, semantic — with a production Arabic search recipe) · memorization/hifz tools · embeddable Quran widgets & oEmbed |
-| **Engineering** | Offline-first architecture · delta-sync freshness · testing & text-integrity QA · editorial pipelines |
-| **Ethics** | Adab rules for handling sacred text — display, storage, logging, AI safety, linguistic terminology |
+| Skill | Use it for |
+|-------|-----------|
+| **`qurantech`** (router) | Choosing blocks and sources, adab rules, qira'at, data models, offline architecture, testing, audio, search, translations, tafsir, i'rab, hifz |
+| `quran-svg` | Printed mushaf pages as SVG with ayah polygons |
+| `quran-svg-elements` | Word- and mark-level interaction on mushaf pages |
+| `quran-engine` | Fast native page rendering (web, iOS, Android, Flutter, React Native) |
+| `quran-tajweed` | Tajweed annotation spans over unchanged text |
+| `qiraat-ayah-map` | Converting ayah references between the six counting systems |
+| `quran-assets` | Surah headers, ayah markers, page frames, ornaments |
+
+`quran-text` and `quranic-terminology` ship their own skills in [`quran-ws/quran-text`](https://github.com/quran-ws/quran-text) and [`quran-ws/docs`](https://github.com/quran-ws/docs); the router points to them.
 
 Two rules run through everything:
 
 1. **Never compromise the text.** Verified sources only, byte-exact storage, no truncation, no normalization, integrity checks in CI.
-2. **Don't reinvent solved problems.** The skill points to existing datasets, fonts, APIs, and open-source packages before recommending custom builds — and it stays **technology-agnostic**: the guidance applies whether you build in Flutter, Swift, Kotlin, React, Laravel, or anything else.
+2. **Don't reinvent solved problems.** Use a building block when one fits, a third-party source when none does, and say which.
 
 ## Installation
 
 ### Claude Code (plugin marketplace)
 
 ```bash
-/plugin marketplace add https://github.com/quranpedia/qurantech-skill
+/plugin marketplace add https://github.com/quran-ws/qurantech-skill
 /plugin install qurantech@qurantech-skill
 ```
 
-Installs the skill as a namespaced Claude Code plugin skill (`/qurantech:qurantech`), with versioned updates. Requires Claude Code v2.1.205 or later.
+Installs all seven skills as namespaced Claude Code plugin skills (`/qurantech:qurantech`, `/qurantech:quran-svg`, …), with versioned updates. Requires Claude Code v2.1.205 or later.
 
 ### One command (any supported agent)
 
 ```bash
-npx skills add quranpedia/qurantech-skill
+npx skills add quran-ws/qurantech-skill
 ```
 
 Installs via the [skills.sh](https://skills.sh) CLI for Claude Code, Cursor, Codex, Gemini CLI, GitHub Copilot, and more.
@@ -54,19 +55,19 @@ Installs via the [skills.sh](https://skills.sh) CLI for Claude Code, Cursor, Cod
 ### Claude Code (manual)
 
 ```bash
-git clone https://github.com/quranpedia/qurantech-skill.git
+git clone https://github.com/quran-ws/qurantech-skill.git
 mkdir -p ~/.claude/skills
-cp -r qurantech-skill/plugins/qurantech/skills/qurantech ~/.claude/skills/qurantech
+cp -r qurantech-skill/plugins/qurantech/skills/* ~/.claude/skills/
 ```
 
 Either way — verify with a prompt like *"add Warsh support to my Quran app"* and watch the skill trigger.
 
 ### Claude.ai / Claude API
 
-Upload the packaged skill file (`dist/qurantech.skill`) via **Settings → Capabilities → Skills** on Claude.ai, or attach it through the API's skills support. To rebuild the package yourself, use the [skill-creator](https://github.com/anthropics/skills) tooling:
+Upload the packaged skill files (`dist/*.skill`, start with `qurantech.skill`) via **Settings → Capabilities → Skills** on Claude.ai, or attach it through the API's skills support. To rebuild the package yourself, use the [skill-creator](https://github.com/anthropics/skills) tooling:
 
 ```bash
-python -m scripts.package_skill path/to/qurantech-skill/plugins/qurantech/skills/qurantech
+for d in plugins/qurantech/skills/*/; do python -m scripts.package_skill "$d" dist; done
 ```
 
 ## Example prompts
@@ -83,19 +84,26 @@ python -m scripts.package_skill path/to/qurantech-skill/plugins/qurantech/skills
 
 ```
 qurantech-skill/
-├── .claude-plugin/
-│   └── marketplace.json            # Claude Code plugin marketplace catalog
-├── plugins/
-│   └── qurantech/
-│       ├── .claude-plugin/
-│       │   └── plugin.json         # Plugin manifest (namespace: qurantech)
-│       └── skills/
-│           └── qurantech/
-│               ├── SKILL.md        # Entry point: triggers, workflow, principles, reference index
-│               └── references/     # 19 domain reference files (loaded on demand)
-├── evals/                # Test prompts + assertions for benchmarking the skill
-├── dist/                 # Packaged .skill file for Claude.ai / API
-└── README.md             # You are here
+├── .claude-plugin/marketplace.json     # Claude Code plugin marketplace catalog
+├── plugins/qurantech/
+│   ├── .claude-plugin/plugin.json      # Plugin manifest
+│   └── skills/
+│       ├── qurantech/                  # Router skill
+│       │   ├── SKILL.md
+│       │   └── references/
+│       │       ├── blocks.md           # Quran.ws building-block catalog
+│       │       ├── concepts/           # adab, qira'at, rendering, data models, architecture, QA
+│       │       ├── features/           # audio, search, hifz, tafsir, i'rab, verse recognition…
+│       │       └── sources/            # third-party APIs and datasets, QuranPedia API and embed
+│       ├── quran-svg/
+│       ├── quran-svg-elements/
+│       ├── quran-engine/
+│       ├── quran-tajweed/
+│       ├── qiraat-ayah-map/
+│       └── quran-assets/               # each: SKILL.md + references/
+├── evals/                              # Test prompts + assertions
+├── dist/                               # Packaged .skill files for Claude.ai / API
+└── README.md
 ```
 
 ## 🧪 Status: Experimental

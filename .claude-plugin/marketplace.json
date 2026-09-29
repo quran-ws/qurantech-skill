@@ -1,14 +1,14 @@
 {
   "name": "qurantech-skill",
   "owner": {
-    "name": "QuranPedia",
-    "url": "https://github.com/quranpedia"
+    "name": "Quran.ws",
+    "url": "https://github.com/quran-ws"
   },
   "plugins": [
     {
       "name": "qurantech",
       "source": "./plugins/qurantech",
-      "description": "Expert agent skill for building Quran apps: mushaf display, qira'at, tajweed, audio, search, i'rab, hifz, embedding, and adab rules."
+      "description": "Quran app skills: a router for the Quran.ws building blocks and other sources, plus block skills for SVG pages, word-level SVG, the rendering engine, tajweed, qiraat ayah mapping and assets, with adab rules."
     }
   ]
 }

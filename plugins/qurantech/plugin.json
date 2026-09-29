@@ -1,12 +1,12 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "qurantech",
-  "description": "Expert agent skill for building Quran apps and adding Quran features to existing apps.",
-  "version": "1.0.0",
+  "description": "Quran app development skills: a router for the Quran.ws building blocks and third-party sources, plus block skills for quran-svg, quran-svg-elements, quran-engine, quran-tajweed, qiraat-ayah-map and quran-assets.",
+  "version": "2.0.0",
   "author": {
-    "name": "QuranPedia"
+    "name": "Quran.ws"
   },
-  "repository": "https://github.com/quranpedia/qurantech-skill",
+  "repository": "https://github.com/quran-ws/qurantech-skill",
   "license": "MIT",
   "keywords": [
     "quran",
