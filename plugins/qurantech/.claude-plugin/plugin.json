@@ -4,5 +4,17 @@
   "version": "2.0.0",
   "author": {
     "name": "Quran.ws"
-  }
+  },
+  "repository": "https://github.com/quran-ws/qurantech-skill",
+  "license": "MIT",
+  "keywords": [
+    "quran",
+    "islamic",
+    "mushaf",
+    "qiraat",
+    "tajweed",
+    "recitation",
+    "hifz",
+    "tafsir"
+  ]
 }

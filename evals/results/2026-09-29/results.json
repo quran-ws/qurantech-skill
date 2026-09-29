@@ -1,0 +1,1334 @@
+[
+  {
+    "id": 0,
+    "name": "warsh-support-flutter",
+    "config": "with_skill",
+    "seconds": 98,
+    "cost_usd": 0.32616059999999997,
+    "skills_invoked": [
+      "qurantech:qiraat-ayah-map",
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "audio.md",
+      "conversion.md",
+      "data-models.md",
+      "qiraat.md",
+      "text-rendering.md"
+    ],
+    "files": [
+      "plan.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Plan accounts for the different ayah numbering between Hafs and Warsh (counting systems, merged/split ayahs, or cross-riwayah mapping) instead of reusing Hafs ayah_number for Warsh",
+        "pass": true,
+        "evidence": "Plan states 'the same surah:ayah can be a different piece of text in Warsh', Kufi vs madani-last counting, and merged/split mapping."
+      },
+      {
+        "kind": "assert",
+        "check": "Bookmarks/user data become mushaf/riwayah-scoped (schema records which riwayah each bookmark belongs to)",
+        "pass": true,
+        "evidence": "bookmarks table adds `mushaf` and `counting_system` columns, with UNIQUE (mushaf, surah, ayah_number)."
+      },
+      {
+        "kind": "assert",
+        "check": "Warsh text is sourced from a verified published source, not produced by programmatically transforming the Hafs text",
+        "pass": true,
+        "evidence": "Primary source is Quran.ws quran-text built from KFGQPC packages with SHA-256 digests; says 'Do not convert Hafs text into Warsh by string edits'."
+      },
+      {
+        "kind": "assert",
+        "check": "Plan requires a Warsh-specific Quranic font rather than reusing the Hafs font",
+        "pass": true,
+        "evidence": "Requires 'KFGQPC Warsh Uthmanic Script' font, and says the Hafs font will not render Warsh correctly."
+      },
+      {
+        "kind": "assert",
+        "check": "Audio is tied to the riwayah: Warsh text is paired with Warsh reciters, not arbitrary Hafs recordings",
+        "pass": true,
+        "evidence": "'Only offer Warsh reciters when the active mushaf is Warsh'; riwayah and counting_system are stored on the recitation."
+      },
+      {
+        "kind": "assert",
+        "check": "Names a concrete maintained source for the cross-riwayah mapping or the Warsh text (for example qiraat-ayah-map or quran-text) rather than inventing a mapping table",
+        "pass": true,
+        "evidence": "Names @quran.ws/qiraat-ayah-map for the mapping and quran-text for the Warsh text."
+      },
+      {
+        "kind": "must_not",
+        "check": "Hardcodes 6,236 (or any single number) as the ayah count for all riwayat",
+        "pass": true,
+        "evidence": "6,236 is given only as the Kufi count and 6,214 for Warsh; the plan says not to hardcode totals and to derive them per mushaf."
+      },
+      {
+        "kind": "must_not",
+        "check": "Produces the Warsh text by transforming the Hafs text with code",
+        "pass": true,
+        "evidence": "The plan explicitly forbids deriving Warsh from Hafs and imports from a pinned source instead."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text (ayahs written out in Arabic)",
+        "pass": true,
+        "evidence": "No Arabic Quranic ayah text appears in the plan."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "qiraat-ayah-map"
+    ]
+  },
+  {
+    "id": 0,
+    "name": "warsh-support-flutter",
+    "config": "baseline",
+    "seconds": 61,
+    "cost_usd": 0.1257874,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "plan.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Plan accounts for the different ayah numbering between Hafs and Warsh (counting systems, merged/split ayahs, or cross-riwayah mapping) instead of reusing Hafs ayah_number for Warsh",
+        "pass": true,
+        "evidence": "Section 0 explains Kufan vs Madani counts, split/merged verses, and adds a verse_map table with riwaya-keyed ayahs."
+      },
+      {
+        "kind": "assert",
+        "check": "Bookmarks/user data become mushaf/riwayah-scoped (schema records which riwayah each bookmark belongs to)",
+        "pass": true,
+        "evidence": "bookmarks_new has a riwaya TEXT NOT NULL column and UNIQUE (riwaya, surah, ayah_number)."
+      },
+      {
+        "kind": "assert",
+        "check": "Warsh text is sourced from a verified published source, not produced by programmatically transforming the Hafs text",
+        "pass": true,
+        "evidence": "The plan prefers KFGQPC as the authoritative Warsh source, treats community datasets as untrusted, and adds a Warsh-literate reviewer."
+      },
+      {
+        "kind": "assert",
+        "check": "Plan requires a Warsh-specific Quranic font rather than reusing the Hafs font",
+        "pass": true,
+        "evidence": "Section 3 says to bundle a Warsh-capable font as a separate family and that the Hafs font renders Warsh wrongly."
+      },
+      {
+        "kind": "assert",
+        "check": "Audio is tied to the riwayah: Warsh text is paired with Warsh reciters, not arbitrary Hafs recordings",
+        "pass": true,
+        "evidence": "Section 4 says recitation must be Warsh, reciters are tied to a riwaya, and the picker lists only reciters for the active riwaya."
+      },
+      {
+        "kind": "assert",
+        "check": "Names a concrete maintained source for the cross-riwayah mapping or the Warsh text (for example qiraat-ayah-map or quran-text) rather than inventing a mapping table",
+        "pass": true,
+        "evidence": "It names KFGQPC as the concrete Warsh text source (also Quran.com API and Tanzil), and does not invent a mapping source."
+      },
+      {
+        "kind": "must_not",
+        "check": "Hardcodes 6,236 (or any single number) as the ayah count for all riwayat",
+        "pass": true,
+        "evidence": "It says Hafs uses 6236 and Warsh has about 6214–6217. It says to compute counts from the DB per riwaya rather than hardcode 6236."
+      },
+      {
+        "kind": "must_not",
+        "check": "Produces the Warsh text by transforming the Hafs text with code",
+        "pass": false,
+        "evidence": "The verse_map is built by aligning both texts, but the Warsh text itself is sourced from KFGQPC and is not derived from Hafs. The plan does not violate the check."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text (ayahs written out in Arabic)",
+        "pass": true,
+        "evidence": "No Arabic Quranic ayah text is written out in the plan."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "qiraat-ayah-map"
+    ]
+  },
+  {
+    "id": 1,
+    "name": "wordpress-ayah-embed",
+    "config": "with_skill",
+    "seconds": 43,
+    "cost_usd": 0.1891108,
+    "skills_invoked": [
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "adab.md",
+      "quranpedia-embed.md",
+      "translations-tafsir.md"
+    ],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends an embed/oEmbed solution that requires no custom backend or plugin maintenance (e.g., an embeddable Quran widget service), rather than building one",
+        "pass": true,
+        "evidence": "Recommends QuranPedia's hosted embed widget: 'you write no backend and keep no plugin'."
+      },
+      {
+        "kind": "assert",
+        "check": "Provides paste-able code (script tag, iframe, embeddable link, or oEmbed URL) that works inside WordPress posts",
+        "pass": true,
+        "evidence": "Provides a script tag and Custom HTML div/link snippets for pasting into WordPress posts."
+      },
+      {
+        "kind": "assert",
+        "check": "Tafsir is reachable on tap/click without leaving the post, per the requirement",
+        "pass": true,
+        "evidence": "'The reader taps التفسير and it opens inside the frame'; the link mode opens a modal with the verse and tafsir."
+      },
+      {
+        "kind": "assert",
+        "check": "Verses render complete and in a proper Quranic font — no hand-typed or truncated Quranic text in the snippets",
+        "pass": true,
+        "evidence": "Snippets contain only surah/ayah references, so the widget renders the full verse with Quranic fonts; 'You never type or paste the verse yourself'."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed or truncated Quranic text in the snippets",
+        "pass": true,
+        "evidence": "No Quranic verse text appears in the snippets; only numeric references and the phrase 'آية الكرسي' as a link label."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends building a custom backend or WordPress plugin",
+        "pass": false,
+        "evidence": "It offers an optional custom shortcode (~10 lines in functions.php) and suggests a snippet plugin, though the main recommendation is a hosted widget with no custom plugin."
+      }
+    ],
+    "category": "routing",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 1,
+    "name": "wordpress-ayah-embed",
+    "config": "baseline",
+    "seconds": 55,
+    "cost_usd": 0.12965079999999998,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends an embed/oEmbed solution that requires no custom backend or plugin maintenance (e.g., an embeddable Quran widget service), rather than building one",
+        "pass": false,
+        "evidence": "It recommends a custom-written JS snippet calling the Quran.com API rather than an embeddable Quran widget or oEmbed service, so the user has to maintain their own code."
+      },
+      {
+        "kind": "assert",
+        "check": "Provides paste-able code (script tag, iframe, embeddable link, or oEmbed URL) that works inside WordPress posts",
+        "pass": true,
+        "evidence": "It provides paste-able CSS and JS, and the JS can go in a WPCode snippet or a Custom HTML block."
+      },
+      {
+        "kind": "assert",
+        "check": "Tafsir is reachable on tap/click without leaving the post, per the requirement",
+        "pass": true,
+        "evidence": "Clicking the verse button toggles the 'open' class, which shows the tafsir panel below the verse on the same page."
+      },
+      {
+        "kind": "assert",
+        "check": "Verses render complete and in a proper Quranic font — no hand-typed or truncated Quranic text in the snippets",
+        "pass": true,
+        "evidence": "Verses are fetched in full from the API as Uthmani text and styled with the 'Amiri Quran' font, and no verse text appears in the snippets."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed or truncated Quranic text in the snippets",
+        "pass": true,
+        "evidence": "The snippets contain only markers like {{2:255}} and no typed Quranic text."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends building a custom backend or WordPress plugin",
+        "pass": true,
+        "evidence": "It explicitly says no backend and no custom plugin, and only suggests the third-party WPCode plugin for pasting code."
+      }
+    ],
+    "category": "routing",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "hifz-app-design",
+    "config": "with_skill",
+    "seconds": 72,
+    "cost_usd": 0.25505059999999996,
+    "skills_invoked": [
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "adab.md",
+      "data-models.md",
+      "memorization.md",
+      "verse-recognition.md"
+    ],
+    "files": [
+      "design.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Review system is structured — spaced repetition and/or traditional revision tiers (new lesson / recent / long-term revision) with a review queue, not just a list of memorized surahs",
+        "pass": true,
+        "evidence": "Sabaq/sabqi/manzil tiers with a today's queue, time budget, next_review, and a scheduler (fixed rotation, with FSRS later)."
+      },
+      {
+        "kind": "assert",
+        "check": "Mutashabihat (similar-verse confusion) is handled explicitly as a feature or data concern",
+        "pass": true,
+        "evidence": "SimilarGroup/SimilarMember entities, similar-verse warnings with a diff, a drifted_to_similar mistake kind, and a mutashabihat drill."
+      },
+      {
+        "kind": "assert",
+        "check": "Recitation checking is honest: verse-recognition/ASR with confidence limits, no claim of reliable automatic tajweed grading, and the teacher stays in the loop",
+        "pass": true,
+        "evidence": "Section 6 covers verse ID and word-following as advisory only, notes benchmark limits, says tajweed and makhraj are teacher-only, and keeps the teacher's assessment above the machine's."
+      },
+      {
+        "kind": "assert",
+        "check": "Data model tracks progress by page or ayah-range with mushaf context, and mistakes at word or ayah level",
+        "pass": true,
+        "evidence": "MemorizationUnit is a page or ayah range keyed to a mushaf, and MistakeMark records word_number."
+      },
+      {
+        "kind": "assert",
+        "check": "Core memorization flows work offline",
+        "pass": true,
+        "evidence": "MVP item 9 'Offline everything' covers queue, drills, recording and on-device recognition, and sync is local-first."
+      },
+      {
+        "kind": "assert",
+        "check": "Keys progress and review items to a mushaf/riwayah or counting system, not bare surah:ayah",
+        "pass": true,
+        "evidence": "'A reference is never bare surah:ayah'; every reference carries mushaf and counting_system, and section 5.4 covers riwayah switching."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims the app can reliably grade tajweed automatically",
+        "pass": true,
+        "evidence": "The doc says explicitly that automation cannot reliably judge tajweed, and that 'tajweed' never appears in automated feedback."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text",
+        "pass": true,
+        "evidence": "The doc contains only references such as 2:255 and no Arabic Quranic text."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "hifz-app-design",
+    "config": "baseline",
+    "seconds": 75,
+    "cost_usd": 0.1218016,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "design.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Review system is structured — spaced repetition and/or traditional revision tiers (new lesson / recent / long-term revision) with a review queue, not just a list of memorized surahs",
+        "pass": true,
+        "evidence": "§3.2/3.4 define sabaq/sabqi/manzil tiers and FSRS/SM-2 scheduling with memory_item.due_at and a daily list of due items."
+      },
+      {
+        "kind": "assert",
+        "check": "Mutashabihat (similar-verse confusion) is handled explicitly as a feature or data concern",
+        "pass": true,
+        "evidence": "mutashabih_group/member tables plus §3.4 flagged pairs and targeted drills."
+      },
+      {
+        "kind": "assert",
+        "check": "Recitation checking is honest: verse-recognition/ASR with confidence limits, no claim of reliable automatic tajweed grading, and the teacher stays in the loop",
+        "pass": true,
+        "evidence": "§5.3-5.5 give tiered reliability, confidence thresholds, tajweed 'not assessed'/experimental, and teacher review with no auto-pass."
+      },
+      {
+        "kind": "assert",
+        "check": "Data model tracks progress by page or ayah-range with mushaf context, and mistakes at word or ayah level",
+        "pass": true,
+        "evidence": "Ranges use start_ayah_id/end_ayah_id with page/line on ayah and word; teacher_mark uses word_id ranges."
+      },
+      {
+        "kind": "assert",
+        "check": "Core memorization flows work offline",
+        "pass": true,
+        "evidence": "Principle 4 says text, audio and reviews work offline; SQLite on device, client UUIDs, event-log sync."
+      },
+      {
+        "kind": "assert",
+        "check": "Keys progress and review items to a mushaf/riwayah or counting system, not bare surah:ayah",
+        "pass": true,
+        "evidence": "mushaf_edition(riwaya, pages, version_hash) is used; all user data references ayah_id/word_id from a specific edition version, and riwaya is a per-user setting."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims the app can reliably grade tajweed automatically",
+        "pass": true,
+        "evidence": "The doc says tajweed is poor to research-grade, 'Not assessed' by default, and that the app cannot certify correctness."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text",
+        "pass": true,
+        "evidence": "No Quranic Arabic text appears in the doc; there are only field names like text_uthmani."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "interactive-mushaf-word-highlight",
+    "config": "with_skill",
+    "seconds": 42,
+    "cost_usd": 0.1722372,
+    "skills_invoked": [
+      "qurantech:quran-engine",
+      "qurantech:quran-svg-elements",
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "audio.md",
+      "data-sources.md"
+    ],
+    "files": [
+      "plan.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Chooses quran-svg-elements and quran-engine for word-level interaction rather than quran-svg (ayah polygons only)",
+        "pass": false,
+        "evidence": "Chooses quran-engine but explicitly puts quran-svg-elements under 'Not chosen' (web-only), so it does not choose both."
+      },
+      {
+        "kind": "assert",
+        "check": "States that quran-svg-elements currently covers Hafs only, or otherwise flags coverage limits",
+        "pass": true,
+        "evidence": "States 'The engine and elements are Hafs-only' and the word-level blocks are Hafs-only."
+      },
+      {
+        "kind": "assert",
+        "check": "Sources word-level audio timings and word meanings from outside the Quran.ws blocks (for example Quran Foundation or QUL)",
+        "pass": true,
+        "evidence": "Audio timings and word meanings come from Quran Foundation API or QUL, not from a Quran.ws block."
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions checking licences or pinning versions of the blocks or their data",
+        "pass": true,
+        "evidence": "Says to pin exact versions and to confirm licences: 'Page data carries KFGQPC terms, not MIT'."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends only quran-svg (ayah polygons) for word-level interaction",
+        "pass": true,
+        "evidence": "Recommends quran-engine for word-level interaction and does not recommend quran-svg alone; quran-svg is only mentioned as a fallback for non-Hafs riwayat."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims word-level pages exist for riwayat other than Hafs without a caveat",
+        "pass": true,
+        "evidence": "Says the engine and elements are Hafs-only and does not claim word-level pages exist for other riwayat."
+      }
+    ],
+    "category": "routing",
+    "expects_skills": [
+      "qurantech",
+      "quran-svg-elements",
+      "quran-engine"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "interactive-mushaf-word-highlight",
+    "config": "baseline",
+    "seconds": 44,
+    "cost_usd": 0.06134439999999999,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "plan.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Chooses quran-svg-elements and quran-engine for word-level interaction rather than quran-svg (ayah polygons only)",
+        "pass": false,
+        "evidence": "The plan never mentions quran-svg-elements or quran-engine; it picks QCF fonts and Quran.com/QUL data."
+      },
+      {
+        "kind": "assert",
+        "check": "States that quran-svg-elements currently covers Hafs only, or otherwise flags coverage limits",
+        "pass": false,
+        "evidence": "It doesn't mention Hafs-only coverage of quran-svg-elements or any coverage limit of that kind."
+      },
+      {
+        "kind": "assert",
+        "check": "Sources word-level audio timings and word meanings from outside the Quran.ws blocks (for example Quran Foundation or QUL)",
+        "pass": true,
+        "evidence": "It takes word segments and word-by-word translations from Quran.com API and QUL, e.g. 'Quran.com recitations API ?segments=true, or QUL audio segment data'."
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions checking licences or pinning versions of the blocks or their data",
+        "pass": true,
+        "evidence": "It says 'Check licensing: the KFGQPC fonts have their own terms' and 'Licensing: fonts, audio, translations, and corpus data each have separate licenses'."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends only quran-svg (ayah polygons) for word-level interaction",
+        "pass": true,
+        "evidence": "It does not recommend quran-svg ayah polygons; it recommends per-word QCF fonts."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims word-level pages exist for riwayat other than Hafs without a caveat",
+        "pass": true,
+        "evidence": "It makes no claim that word-level pages exist for riwayat other than Hafs."
+      }
+    ],
+    "category": "routing",
+    "expects_skills": [
+      "qurantech",
+      "quran-svg-elements",
+      "quran-engine"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "tajweed-reader",
+    "config": "with_skill",
+    "seconds": 95,
+    "cost_usd": 0.190788,
+    "skills_invoked": [
+      "qurantech:quran-tajweed"
+    ],
+    "references_read": [
+      "spans.md"
+    ],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Uses precomputed tajweed annotation spans (for example quran-tajweed) applied over the unchanged text, rather than editing the text or writing regex detection from scratch",
+        "pass": true,
+        "evidence": "Uses quran-tajweed precomputed [start,end,ruleIndex] spans overlaid on unchanged text; no regex detection."
+      },
+      {
+        "kind": "assert",
+        "check": "Verifies the app's text matches the edition the spans were computed against, or explains why offsets would drift",
+        "pass": true,
+        "evidence": "Step 1 compares the user's JSON to the reference edition and explains that one code point of difference misaligns colours."
+      },
+      {
+        "kind": "assert",
+        "check": "Renders colour as a presentation layer without stripping or altering diacritics or waqf marks",
+        "pass": true,
+        "evidence": "Runs are extended past combining marks, waqf signs keep the surrounding colour, and the test checks that runs joined equal the original text."
+      },
+      {
+        "kind": "assert",
+        "check": "Does not hand-type Quranic text in the code samples",
+        "pass": true,
+        "evidence": "Code samples contain no Quranic verse text; they only include offsets and letter sets."
+      },
+      {
+        "kind": "must_not",
+        "check": "Edits or re-types the Quranic text to add colour",
+        "pass": true,
+        "evidence": "Text is never edited or retyped; it is split into runs, and the answer says never normalise or retype it."
+      },
+      {
+        "kind": "must_not",
+        "check": "Writes regex-based tajweed detection as the main approach",
+        "pass": true,
+        "evidence": "The main approach uses precomputed spans; the only regexes are for Unicode marks and letters in the run-building helpers, not tajweed detection."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "quran-tajweed"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "tajweed-reader",
+    "config": "baseline",
+    "seconds": 49,
+    "cost_usd": 0.07824439999999999,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Uses precomputed tajweed annotation spans (for example quran-tajweed) applied over the unchanged text, rather than editing the text or writing regex detection from scratch",
+        "pass": true,
+        "evidence": "Recommends stand-off annotations from an existing dataset (cpfair/quran-tajweed) applied over the unchanged text; the regex/rule-engine option is only a fallback."
+      },
+      {
+        "kind": "assert",
+        "check": "Verifies the app's text matches the edition the spans were computed against, or explains why offsets would drift",
+        "pass": true,
+        "evidence": "The 'Critical caveat' explains that offsets drift if the text differs from the dataset's, and tells the user to compare each ayah before trusting the offsets."
+      },
+      {
+        "kind": "assert",
+        "check": "Renders colour as a presentation layer without stripping or altering diacritics or waqf marks",
+        "pass": true,
+        "evidence": "Colour is applied with CSS classes on spans via textContent and chars.join, so diacritics are preserved; it also warns about span boundaries splitting a letter from its diacritic."
+      },
+      {
+        "kind": "assert",
+        "check": "Does not hand-type Quranic text in the code samples",
+        "pass": true,
+        "evidence": "The code samples contain no Quranic Arabic text, only ayah.text variables and surah references."
+      },
+      {
+        "kind": "must_not",
+        "check": "Edits or re-types the Quranic text to add colour",
+        "pass": true,
+        "evidence": "The text is kept unchanged and only wrapped in spans, with the JSON left untouched."
+      },
+      {
+        "kind": "must_not",
+        "check": "Writes regex-based tajweed detection as the main approach",
+        "pass": true,
+        "evidence": "The main approach is dataset annotations; a rule engine appears only as a fallback for mechanical rules if no dataset fits."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "quran-tajweed"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "warsh-tafsir-join",
+    "config": "with_skill",
+    "seconds": 36,
+    "cost_usd": 0.0829268,
+    "skills_invoked": [
+      "qurantech:qiraat-ayah-map"
+    ],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Identifies different ayah numbering between Warsh and Hafs (splits and merges) as the cause",
+        "pass": true,
+        "evidence": "Says Warsh (madani-last) and Hafs (kufi) disagree on ayah boundaries, with merges and splits (e.g. Warsh 1:1 covers Hafs 1:1 and 1:2)."
+      },
+      {
+        "kind": "assert",
+        "check": "Converts through a maintained mapping dataset (for example qiraat-ayah-map) instead of hand-written offsets",
+        "pass": true,
+        "evidence": "Uses @quran.ws/qiraat-ayah-map's madani-last-to-kufi.json mapping instead of hand-written offsets."
+      },
+      {
+        "kind": "assert",
+        "check": "Handles one Warsh ayah mapping to a range of Hafs ayahs, or the reverse",
+        "pass": true,
+        "evidence": "warshToHafs returns an array via hafs_ayahs for covers_multiple, and the answer describes splits_into ranges for the reverse direction."
+      },
+      {
+        "kind": "assert",
+        "check": "Recommends scoping ayah keys by counting system or riwayah",
+        "pass": true,
+        "evidence": "Recommends storing {surah, ayah, counting} or the Kufan reference for bookmarks instead of bare surah:ayah."
+      },
+      {
+        "kind": "must_not",
+        "check": "Joins on bare (surah, ayah) numbers across riwayat without conversion",
+        "pass": true,
+        "evidence": "Explicitly warns that joining on the raw pair is the bug and forbids falling back to it."
+      },
+      {
+        "kind": "must_not",
+        "check": "Assumes every Warsh ayah maps to exactly one Hafs ayah",
+        "pass": true,
+        "evidence": "Always treats the result as an array and says never to take only the first element."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "qiraat-ayah-map"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "warsh-tafsir-join",
+    "config": "baseline",
+    "seconds": 53,
+    "cost_usd": 0.1094712,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Identifies different ayah numbering between Warsh and Hafs (splits and merges) as the cause",
+        "pass": true,
+        "evidence": "Explains Warsh (Madani count) vs Hafs (Kufan) verse numbering differ, with splits, merges and shifts."
+      },
+      {
+        "kind": "assert",
+        "check": "Converts through a maintained mapping dataset (for example qiraat-ayah-map) instead of hand-written offsets",
+        "pass": false,
+        "evidence": "Says 'Don't hand-write the map' but builds it with a custom word-alignment script; a published dataset is only an optional alternative and qiraat-ayah-map isn't named."
+      },
+      {
+        "kind": "assert",
+        "check": "Handles one Warsh ayah mapping to a range of Hafs ayahs, or the reverse",
+        "pass": true,
+        "evidence": "The ayah_map schema has one row per overlapping Hafs ayah and the answer handles many-to-many ranges in the query and UI."
+      },
+      {
+        "kind": "assert",
+        "check": "Recommends scoping ayah keys by counting system or riwayah",
+        "pass": false,
+        "evidence": "It never recommends scoping ayah keys by counting system or riwayah. It only adds a Warsh-to-Hafs mapping table."
+      },
+      {
+        "kind": "must_not",
+        "check": "Joins on bare (surah, ayah) numbers across riwayat without conversion",
+        "pass": true,
+        "evidence": "The answer identifies the bare (surah, ayah) join as the bug and joins through ayah_map instead."
+      },
+      {
+        "kind": "must_not",
+        "check": "Assumes every Warsh ayah maps to exactly one Hafs ayah",
+        "pass": true,
+        "evidence": "It explicitly states the relationship is many-to-many and that no constant offset fixes it."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "qiraat-ayah-map"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "ornament-licence-check",
+    "config": "with_skill",
+    "seconds": 19,
+    "cost_usd": 0.0714796,
+    "skills_invoked": [
+      "qurantech:quran-assets"
+    ],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends quran-assets (or equivalent open, recolourable SVG source) instead of redrawing or copying from another app",
+        "pass": true,
+        "evidence": "Recommends the Quran.ws quran-assets library of recolourable SVGs and says to vendor it."
+      },
+      {
+        "kind": "assert",
+        "check": "Says to check each asset's licence and status before shipping, for example in catalog.json",
+        "pass": true,
+        "evidence": "Says catalog.json is the source of truth, with each asset's license.status, and adds a build-time licence gate."
+      },
+      {
+        "kind": "assert",
+        "check": "Warns that some assets are non-commercial or provisional and not safe for a paid app without clearance",
+        "pass": true,
+        "evidence": "Says the scan assets are CC-BY-NC-SA-4.0 and provisional, and 'a paid app is out of bounds' until cleared."
+      },
+      {
+        "kind": "assert",
+        "check": "Suggests OFL-licensed assets as the safe choice for commercial use",
+        "pass": true,
+        "evidence": "Says the 40 OFL-1.1 confirmed font markers are safe to ship in a paid app, and recommends launching with them."
+      },
+      {
+        "kind": "must_not",
+        "check": "Says all assets are safe for commercial use",
+        "pass": true,
+        "evidence": "Says the opposite: scan assets are not usable and markers 014-020 must be excluded."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends copying ornaments from another app or website",
+        "pass": true,
+        "evidence": "Recommends clearance, an original design, or OFL assets, and never suggests copying from another app or website."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech",
+      "quran-assets"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "ornament-licence-check",
+    "config": "baseline",
+    "seconds": 27,
+    "cost_usd": 0.049892000000000006,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends quran-assets (or equivalent open, recolourable SVG source) instead of redrawing or copying from another app",
+        "pass": false,
+        "evidence": "Does not recommend quran-assets or an equivalent open recolourable SVG source; it suggests fonts, commissioning, marketplaces, and drawing your own."
+      },
+      {
+        "kind": "assert",
+        "check": "Says to check each asset's licence and status before shipping, for example in catalog.json",
+        "pass": true,
+        "evidence": "Says \"License for each asset: does it allow commercial use, embedding...\" and to keep a copy of each license, though it doesn't mention catalog.json."
+      },
+      {
+        "kind": "assert",
+        "check": "Warns that some assets are non-commercial or provisional and not safe for a paid app without clearance",
+        "pass": false,
+        "evidence": "Warns about CC-BY-NC/share-alike and restrictive KFGQPC terms, but doesn't say some assets are provisional or not cleared for a paid app."
+      },
+      {
+        "kind": "assert",
+        "check": "Suggests OFL-licensed assets as the safe choice for commercial use",
+        "pass": true,
+        "evidence": "\"SIL OFL is fine\" and recommends \"an OFL-licensed Quran font\" for lowest risk in a paid app."
+      },
+      {
+        "kind": "must_not",
+        "check": "Says all assets are safe for commercial use",
+        "pass": true,
+        "evidence": "It never claims all assets are safe for commercial use; it repeatedly says to verify each license."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends copying ornaments from another app or website",
+        "pass": true,
+        "evidence": "Says not to use images extracted from a printed mushaf or another app's bundle without permission."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech",
+      "quran-assets"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "translations-and-audio-no-block",
+    "config": "with_skill",
+    "seconds": 32,
+    "cost_usd": 0.196413,
+    "skills_invoked": [
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "api-comparison.md",
+      "audio.md",
+      "data-sources.md",
+      "translations-tafsir.md"
+    ],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends at least one third-party source for translations and one for audio (for example Quran Foundation API, QUL, Tanzil, QuranEnc, MP3Quran, EveryAyah)",
+        "pass": true,
+        "evidence": "Recommends Quran Foundation API, QUL, QuranEnc for translations and Quran Foundation Audio, QUL, MP3Quran, EveryAyah for audio."
+      },
+      {
+        "kind": "assert",
+        "check": "States that the Quran.ws building blocks do not provide translations or audio, or otherwise does not present them as translation or audio sources",
+        "pass": true,
+        "evidence": "States \"The Quran.ws blocks ship no translations or audio. They give you the keys that attach translations and audio to the text.\""
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions checking licensing or copyright of translations and audio before shipping",
+        "pass": true,
+        "evidence": "\"Licence terms for every translation and audio set you ship\" plus per-translation licence and attribution table."
+      },
+      {
+        "kind": "assert",
+        "check": "Names how word-level timing data is obtained (for example a source with word segments) instead of assuming it exists",
+        "pass": true,
+        "evidence": "Names Quran Foundation Audio API `[word_index, start_ms, end_ms]` segments and QUL segmented sets, and forced alignment as a fallback."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims quran-text, quran-svg or another Quran.ws block supplies translations",
+        "pass": true,
+        "evidence": "Translations are attributed to Quran Foundation, QUL, and QuranEnc, not to quran-text or quran-svg."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text",
+        "pass": true,
+        "evidence": "No Arabic Quranic text appears in the answer, only references like surah:ayah."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 7,
+    "name": "translations-and-audio-no-block",
+    "config": "baseline",
+    "seconds": 26,
+    "cost_usd": 0.0593728,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends at least one third-party source for translations and one for audio (for example Quran Foundation API, QUL, Tanzil, QuranEnc, MP3Quran, EveryAyah)",
+        "pass": true,
+        "evidence": "Recommends Quran.com API v4 and QUL for translations, and EveryAyah and Quran.com CDN for audio."
+      },
+      {
+        "kind": "assert",
+        "check": "States that the Quran.ws building blocks do not provide translations or audio, or otherwise does not present them as translation or audio sources",
+        "pass": false,
+        "evidence": "The answer never mentions Quran.ws building blocks, so it doesn't state that they lack translations or audio."
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions checking licensing or copyright of translations and audio before shipping",
+        "pass": true,
+        "evidence": "The Licences section says 'Text, translations, audio, and fonts each have their own licence' and says to get this right early."
+      },
+      {
+        "kind": "assert",
+        "check": "Names how word-level timing data is obtained (for example a source with word segments) instead of assuming it exists",
+        "pass": true,
+        "evidence": "It names Quran.com API `segments` as `[word_position, start_ms, end_ms]` and QUL audio segment downloads, and notes that EveryAyah has no word timing."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims quran-text, quran-svg or another Quran.ws block supplies translations",
+        "pass": true,
+        "evidence": "It never claims that quran-text, quran-svg or any Quran.ws block supplies translations."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text",
+        "pass": true,
+        "evidence": "The answer contains no Arabic Quranic text."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "multi-riwayah-schema",
+    "config": "with_skill",
+    "seconds": 90,
+    "cost_usd": 0.27785600000000005,
+    "skills_invoked": [
+      "qurantech:qiraat-ayah-map",
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "conversion.md",
+      "data-models.md"
+    ],
+    "files": [
+      "schema.md",
+      "schema.sql"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Bookmarks, progress and notes store a mushaf, riwayah or counting-system identifier alongside surah and ayah",
+        "pass": true,
+        "evidence": "bookmark, note, reading_position and reading_session all carry mushaf_key + counting_system + surah + ayah."
+      },
+      {
+        "kind": "assert",
+        "check": "Ayah totals are not stored as constants; they derive from the mushaf/edition data",
+        "pass": true,
+        "evidence": "Totals are not stored; the mushaf_surah_ayah_count view derives them from ayah rows."
+      },
+      {
+        "kind": "assert",
+        "check": "Explains how a bookmark moves when the user switches riwayah (conversion through a mapping such as qiraat-ayah-map or a Hafs/Kufi anchor)",
+        "pass": true,
+        "evidence": "Section 4 explains the Kufan anchor range and the crosswalk query used when the user switches riwayah."
+      },
+      {
+        "kind": "assert",
+        "check": "Text is loaded from a versioned dataset and the schema does not require editing or normalising the Quranic text",
+        "pass": true,
+        "evidence": "Text comes from a verified source (quran-text) with a source_hash, and ayah.text is stored byte-exact and never normalised, with a separate text_search column."
+      },
+      {
+        "kind": "must_not",
+        "check": "Uses a bare (surah, ayah) pair as the only key for user data",
+        "pass": true,
+        "evidence": "Composite foreign keys use mushaf_key + counting_system + surah + ayah; a bare surah:ayah pair is never the only key."
+      },
+      {
+        "kind": "must_not",
+        "check": "Hardcodes 6236 as the number of ayahs for every mushaf",
+        "pass": true,
+        "evidence": "6236 does not appear anywhere in the schema or the explanation."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text as sample data",
+        "pass": true,
+        "evidence": "There are no sample Quranic text inserts; the only INSERTs are counting system ids."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "qiraat-ayah-map"
+    ]
+  },
+  {
+    "id": 8,
+    "name": "multi-riwayah-schema",
+    "config": "baseline",
+    "seconds": 45,
+    "cost_usd": 0.1116932,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "schema.md",
+      "schema.sql"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Bookmarks, progress and notes store a mushaf, riwayah or counting-system identifier alongside surah and ayah",
+        "pass": true,
+        "evidence": "User data references ayah_id, which is riwaya-specific and implies riwaya; reading_position and reading_sessions also carry riwaya_id, so the riwaya identifier is effectively stored alongside the ayah reference."
+      },
+      {
+        "kind": "assert",
+        "check": "Ayah totals are not stored as constants; they derive from the mushaf/edition data",
+        "pass": true,
+        "evidence": "Ayah counts live in surah_riwaya.ayah_count per riwaya, and progress is computed with COUNT(*) against those totals rather than a constant."
+      },
+      {
+        "kind": "assert",
+        "check": "Explains how a bookmark moves when the user switches riwayah (conversion through a mapping such as qiraat-ayah-map or a Hafs/Kufi anchor)",
+        "pass": true,
+        "evidence": "Section 3 explains the ayah_concordance many-to-many mapping with same/split/merge/partial, and says the app follows it when the user switches riwaya."
+      },
+      {
+        "kind": "assert",
+        "check": "Text is loaded from a versioned dataset and the schema does not require editing or normalising the Quranic text",
+        "pass": false,
+        "evidence": "The schema stores text_uthmani and a derived text_search normalized column, but never mentions a versioned dataset or load provenance; the normalization is a stored derived column."
+      },
+      {
+        "kind": "must_not",
+        "check": "Uses a bare (surah, ayah) pair as the only key for user data",
+        "pass": true,
+        "evidence": "User data keys use ayah_id, a surrogate that includes riwaya, not a bare (surah, ayah) pair."
+      },
+      {
+        "kind": "must_not",
+        "check": "Hardcodes 6236 as the number of ayahs for every mushaf",
+        "pass": true,
+        "evidence": "6236 appears nowhere; counts come from surah_riwaya."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text as sample data",
+        "pass": true,
+        "evidence": "There is no sample data and no Quranic text in the answer."
+      }
+    ],
+    "category": "integrity",
+    "expects_skills": [
+      "qurantech",
+      "qiraat-ayah-map"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "daily-ayah-notification",
+    "config": "with_skill",
+    "seconds": 37,
+    "cost_usd": 0.1232914,
+    "skills_invoked": [
+      "qurantech:qurantech"
+    ],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Does not let an ellipsis or a mid-ayah cut stand in for the ayah text",
+        "pass": true,
+        "evidence": "The answer explicitly forbids ellipsis or cutting mid-ayah. The collapsed view shows only the reference and a label, and the full ayah is shown expanded."
+      },
+      {
+        "kind": "assert",
+        "check": "Shows either a labelled fragment with its reference and a way to the full ayah, or the reference only, with the full ayah rendered in the app",
+        "pass": true,
+        "evidence": "The collapsed view shows the reference plus a 'Tap to read' label, tapping opens the ayah in the app, and the full ayah is rendered in the expanded view and in-app."
+      },
+      {
+        "kind": "assert",
+        "check": "Code samples refer to ayahs by reference or load them from a dataset instead of typing Quranic text",
+        "pass": true,
+        "evidence": "The code uses AyahRef and QuranTextRepo.get(ref) to resolve text from the pinned quran-text dataset, with no typed Quranic text."
+      },
+      {
+        "kind": "assert",
+        "check": "Does not auto-play audio from the notification",
+        "pass": true,
+        "evidence": "Step 6 says 'No audio in the notification. Recitation never starts from a notification.'"
+      },
+      {
+        "kind": "must_not",
+        "check": "Truncates Quranic text with an ellipsis as the solution",
+        "pass": true,
+        "evidence": "The answer rejects truncation with an ellipsis: 'Don't cut at a word boundary or add \"…\"'."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text in the code samples",
+        "pass": true,
+        "evidence": "The samples contain only references such as 2:255 and code placeholders, with no Arabic Quranic text."
+      }
+    ],
+    "category": "adab",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 9,
+    "name": "daily-ayah-notification",
+    "config": "baseline",
+    "seconds": 24,
+    "cost_usd": 0.062395,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Does not let an ellipsis or a mid-ayah cut stand in for the ayah text",
+        "pass": false,
+        "evidence": "The answer includes a shorten() fallback that ends with \"…\" for the collapsed line, so an ellipsis-cut ayah can still stand in for the text."
+      },
+      {
+        "kind": "assert",
+        "check": "Shows either a labelled fragment with its reference and a way to the full ayah, or the reference only, with the full ayah rendered in the app",
+        "pass": false,
+        "evidence": "The main approach sends the full ayah text in the body, and the reference-only option appears only as a fallback, so it does not clearly show a labelled fragment or a reference only."
+      },
+      {
+        "kind": "assert",
+        "check": "Code samples refer to ayahs by reference or load them from a dataset instead of typing Quranic text",
+        "pass": true,
+        "evidence": "The samples use placeholders such as ayah = { surah, number, text: \"...\" } and an ayahId, with no Quranic text typed."
+      },
+      {
+        "kind": "assert",
+        "check": "Does not auto-play audio from the notification",
+        "pass": true,
+        "evidence": "Nothing in the answer plays audio from the notification."
+      },
+      {
+        "kind": "must_not",
+        "check": "Truncates Quranic text with an ellipsis as the solution",
+        "pass": false,
+        "evidence": "The shorten() helper truncates the text on a word boundary and appends \"…\" for the collapsed line."
+      },
+      {
+        "kind": "must_not",
+        "check": "Contains hand-typed Quranic text in the code samples",
+        "pass": true,
+        "evidence": "The code samples contain no Arabic or Quranic text, only \"...\" placeholders."
+      }
+    ],
+    "category": "adab",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "offline-verse-recognition",
+    "config": "with_skill",
+    "seconds": 27,
+    "cost_usd": 0.1231126,
+    "skills_invoked": [
+      "qurantech:qurantech"
+    ],
+    "references_read": [
+      "verse-recognition.md"
+    ],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends an offline ONNX-based recognition approach (for example Tilawa, formerly offline-tarteel) or another named offline model rather than a cloud API",
+        "pass": true,
+        "evidence": "Recommends Tilawa (@tilawa/core) with onnxruntime-react-native, fully on-device ONNX."
+      },
+      {
+        "kind": "assert",
+        "check": "States accuracy or capability limits honestly and does not claim reliable tajweed grading",
+        "pass": true,
+        "evidence": "Says small self-benchmarks, near-identical ayahs confusable, 'does not grade tajweed or correctness', test on real noisy audio."
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions the licence or size of the model as a factor for shipping (for example the non-commercial licence on some models)",
+        "pass": true,
+        "evidence": "Licence 'the biggest one': Zipformer NPL-1.2 non-commercial vs FastConformer CC-BY-4.0; model sizes 66-88 MB."
+      },
+      {
+        "kind": "assert",
+        "check": "Maps the recognised result to an ayah reference and notes it depends on the counting system or riwayah",
+        "pass": true,
+        "evidence": "Output is surah:ayah, uses qiraat-ayah-map to convert to riwayah/counting system; 'Never assume Hafs numbering'."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims the model grades tajweed reliably",
+        "pass": true,
+        "evidence": "Explicitly states it does not grade tajweed or correctness."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends a cloud speech API as the offline solution",
+        "pass": true,
+        "evidence": "Cloud ASR (Whisper) is explicitly ruled out as not offline."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech"
+    ]
+  },
+  {
+    "id": 10,
+    "name": "offline-verse-recognition",
+    "config": "baseline",
+    "seconds": 22,
+    "cost_usd": 0.0520414,
+    "skills_invoked": [],
+    "references_read": [],
+    "files": [
+      "answer.md"
+    ],
+    "graded": [
+      {
+        "kind": "assert",
+        "check": "Recommends an offline ONNX-based recognition approach (for example Tilawa, formerly offline-tarteel) or another named offline model rather than a cloud API",
+        "pass": true,
+        "evidence": "Recommends on-device whisper.rn (whisper.cpp) and sherpa-onnx, plus a Quran-fine-tuned Whisper model, all offline rather than cloud."
+      },
+      {
+        "kind": "assert",
+        "check": "States accuracy or capability limits honestly and does not claim reliable tajweed grading",
+        "pass": false,
+        "evidence": "It lists accuracy limits, but the closest it comes on tajweed is 'Do not claim it verifies recitation correctness unless you build that separately', which doesn't clearly state that tajweed grading is unreliable."
+      },
+      {
+        "kind": "assert",
+        "check": "Mentions the licence or size of the model as a factor for shipping (for example the non-commercial licence on some models)",
+        "pass": true,
+        "evidence": "Lists model sizes (75 MB, 140 MB, 470 MB) and says 'check the licence for the Whisper model you use, especially community fine-tunes'."
+      },
+      {
+        "kind": "assert",
+        "check": "Maps the recognised result to an ayah reference and notes it depends on the counting system or riwayah",
+        "pass": false,
+        "evidence": "It maps matches to surah:ayah using a bundled Tanzil text, but never says the reference depends on the counting system or riwayah; it mentions qira'at only as an accuracy factor."
+      },
+      {
+        "kind": "must_not",
+        "check": "Claims the model grades tajweed reliably",
+        "pass": true,
+        "evidence": "It never claims tajweed is graded reliably, and it warns against claiming recitation verification."
+      },
+      {
+        "kind": "must_not",
+        "check": "Recommends a cloud speech API as the offline solution",
+        "pass": true,
+        "evidence": "The on-device platform speech APIs are listed but rated 'Not recommended as the main path'; the recommendation is whisper.rn, which runs offline."
+      }
+    ],
+    "category": "honesty",
+    "expects_skills": [
+      "qurantech"
+    ]
+  }
+]

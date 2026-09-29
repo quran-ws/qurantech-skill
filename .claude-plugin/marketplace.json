@@ -10,5 +10,6 @@
       "source": "./plugins/qurantech",
       "description": "Quran app skills: a router for the Quran.ws building blocks and other sources, plus block skills for SVG pages, word-level SVG, the rendering engine, tajweed, qiraat ayah mapping and assets, with adab rules."
     }
-  ]
+  ],
+  "description": "Skills that teach coding agents to build Quran applications on the open Quran.ws building blocks and other trusted sources."
 }
