@@ -1,6 +1,83 @@
+Copyright 2026 Quran.ws
+
+This work is dedicated as a waqf for the sake of Allah, seeking His pleasure
+through the benefit it brings to people. We publish it to enable the widest
+possible beneficial use, with as few restrictions as possible.
+
+Quran.ws publishes code under the MIT License, and data and content under the
+Creative Commons Attribution 4.0 International License,
+with a standing waiver of attribution for use inside a product.
+
+We license only what we have the right to license; third-party material keeps
+the licence and terms of its own rights holders.
+
+Full policy: https://github.com/quran-ws/guidelines
+
+
+═══════════════════════════════════════════════════════════════════════════════
+WHAT IS COVERED BY WHAT
+═══════════════════════════════════════════════════════════════════════════════
+
+  .claude-plugin/ MIT
+  dist/           CC BY 4.0
+  evals/          MIT
+  plugins/        CC BY 4.0
+
+Where a directory or file carries its own LICENSE or NOTICE, that notice
+governs for that material. Names, logos and trademarks are not licensed.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ATTRIBUTION WAIVED FOR USE IN PRODUCTS
+═══════════════════════════════════════════════════════════════════════════════
+
+As rights holders of our original data and content, we grant a permanent,
+worldwide, royalty-free, irrevocable waiver of the attribution requirement of
+CC BY 4.0 (Section 3(a)) when the material is used within an application,
+website, service, API, bot, tool, research work, or product, whether free or
+commercial. This permission expands what you may do and adds no restriction to
+CC BY 4.0.
+
+Attribution is still required on republication — when the data or content
+itself is made available to others as a resource in its own right. The test:
+if a third party can obtain the data AS DATA from what you distribute, that is
+republication, and CC BY 4.0 attribution applies.
+
+Suggested attribution:
+
+  Data from [resource] by Quran.ws, licensed under CC BY 4.0.
+  Source: [canonical URL]. Version: [version]. Modified: [yes/no].
+
+Use for training, fine-tuning, evaluating, indexing or retrieval by machine
+learning systems is permitted and treated as use, not republication.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ACCURACY AND NO WARRANTY
+═══════════════════════════════════════════════════════════════════════════════
+
+This material is provided AS IS, without warranty of any kind, as stated in
+the MIT License and in CC BY 4.0 (Sections 5 and 6).
+
+Qur'anic text, transliteration, translation, recitation and mushaf rendering
+may contain errors, and releases are corrected over time. Anyone publishing
+Qur'anic text to end users is responsible for verifying it against an
+authorised printed mushaf and for tracking our corrections.
+
+Corrections:          corrections@quran.ws — treated as a priority.
+Licensing questions:  legal@quran.ws
+
+
+═══════════════════════════════════════════════════════════════════════════════
+FULL LICENCE TEXTS
+═══════════════════════════════════════════════════════════════════════════════
+
+The full CC BY 4.0 legal text is in LICENSES/CC-BY-4.0.txt and at
+https://creativecommons.org/licenses/by/4.0/legalcode
+
 MIT License
 
-Copyright (c) 2026 QuranTech Skill contributors
+Copyright (c) 2026 Quran.ws
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +96,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+This notice is published in Arabic and English. Where the two differ, the
+Arabic version governs.

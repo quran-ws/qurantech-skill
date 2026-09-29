@@ -100,7 +100,7 @@ Quran Foundation ships per-page woff2 fonts where each word is one glyph (`verse
   - Arabic Extended-B — used by Warsh, Qalun and Sousi in `quran-text`
   - `U+FB50–U+FDFF` and `U+FE70–U+FEFF` — Presentation Forms-A and B (legacy ligatures; unverified for Quranic use here, so do not depend on them)
 - **Uthmani text uses codepoints outside basic Arabic**, such as the superscript alef `U+0670` (in the standard Arabic block) and small high noon `U+06E8`. Ensure your font and rendering pipeline supports them.
-- **Normalization caution:** Do not normalize Quranic text stored or shown. NFC and NFD both reorder or compose marks (both reorder shadda+fatha; NFC turns alef+maddah into `U+0622`), so the codepoint sequence no longer matches the source. The one exception is comparing across datasets: normalise both sides to NFC, as `quran-text`'s `docs/format.md` says ([testing-qa.md](testing-qa.md)).
+- **Normalization caution:** Do not normalize Quranic text stored or shown. NFC and NFD both reorder or compose marks (both reorder shadda+fatha; NFC turns alef+maddah into `U+0622`), so the codepoint sequence no longer matches the source. The one exception is comparing across datasets: normalise both sides to NFC in a throwaway comparison copy, never in the stored source, as `quran-text`'s `docs/format.md` says ([testing-qa.md](testing-qa.md)).
 
 ## Line Breaking
 
