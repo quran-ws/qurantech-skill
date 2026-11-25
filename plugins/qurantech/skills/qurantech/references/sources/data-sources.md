@@ -139,6 +139,7 @@ For word identity and position, `quran-text` (shared word numbering, `word-index
 | **Quran Foundation API** | Word-by-word translation, transliteration, morphology |
 | **QuranWBW** | Word-by-word breakdown (unverified; no URL confirmed) |
 | **Buraaq Word Audio** | Word-level audio segments (HuggingFace) |
+| **Qawlat** (qawlat.com/resources) | Per-root analysis (definitions, distinctions between close roots, substitution tests), word forms with occurrence counts, semantic fields, opposites, topics, surah profiles. Hafs; built from the Quran text alone (no tafsir or external lexicons). JSON downloads, CC BY 4.0; no CORS, so bundle or fetch server-side |
 
 ## Search Services
 
@@ -162,6 +163,7 @@ Quran.ws blocks with native wrappers: `quran-engine` (iOS/macOS, Android, Flutte
 | **mushaf-imad-android** (`YahiaRagae/mushaf-imad-android`) | Kotlin/Android | Android equivalent — mushaf rendering, bookmarks, audio |
 | **mushaf-imad-flutter** (`Itqan-community/mushaf-imad-flutter`) | Flutter | Cross-platform: display, bookmarks, search, offline storage |
 | **Quran MCP** (mcp.quran.ai) | AI (Claude/ChatGPT) | Semantic search & retrieval via MCP protocol |
+| **Qawlat MCP** (qawlat.com/mcp) | AI (Claude/Codex) | Root meanings, word forms and counts, ayah analysis, and `verify_quote` (checks a quotation against the Mushaf). Read-only, no account. Plugin and skills: github.com/qawlat/qawlat-ai |
 
 Prefer existing packages over building from scratch. These libraries handle the hardest parts of Quran app development — mushaf rendering, audio synchronization, offline storage — that are complex and error-prone to reimplement.
 
